@@ -1,0 +1,6 @@
+﻿  Eyler.c
+D:\SparkleSpace\Projects\Programing\Univ\Problem_3\Eyler.c(17,8): warning C4013: Is_Prime: нет определения; предполагается "extern" с возвратом типа "int"
+  Function.c
+  Main.c
+  Создание кода...
+  Problem_3.vcxproj -> D:\SparkleSpace\Projects\Programing\Univ\Problem_3\x64\Debug\Problem_3.exe
