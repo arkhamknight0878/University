@@ -1,0 +1,1 @@
+unsigned long long Problem_1(const unsigned long long number_);
