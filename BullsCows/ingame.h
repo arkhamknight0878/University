@@ -1,0 +1,1 @@
+unsigned int InGame(unsigned int startnum_);
