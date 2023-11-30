@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.7.34031.279
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Euler2", "Euler2.vcxproj", "{81DF761D-2FAB-4487-82F3-60F4205A7913}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Debug|x64.ActiveCfg = Debug|x64
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Debug|x64.Build.0 = Debug|x64
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Debug|x86.ActiveCfg = Debug|Win32
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Debug|x86.Build.0 = Debug|Win32
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Release|x64.ActiveCfg = Release|x64
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Release|x64.Build.0 = Release|x64
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Release|x86.ActiveCfg = Release|Win32
+		{81DF761D-2FAB-4487-82F3-60F4205A7913}.Release|x86.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CF759295-3AE7-4D32-91A6-07D9BF31E970}
+	EndGlobalSection
+EndGlobal
