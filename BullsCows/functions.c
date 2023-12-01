@@ -12,15 +12,16 @@ bool Is_Idiot(unsigned int number_)
 	while (number_ != 0)
 	{
 		check_num = number_ % 10;
-		save = number_;
+		save = number_ / 10;
 
 		while (save != 0)
 		{
-			save /= 10;
 			a = save % 10;
 
-			if (check_num == a)
+			if (a == check_num)
 				return true;
+
+			save /= 10;
 		}
 
 		number_ /= 10;
