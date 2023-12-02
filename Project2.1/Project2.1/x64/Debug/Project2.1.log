@@ -1,0 +1,7 @@
+﻿  main.c
+  mystring.c
+C:\Users\domartynov\source\repos\Project2.1\Project2.1\mystring.c(55,14): warning C4047: return: "int" отличается по уровням косвенного обращения от "void *"
+C:\Users\domartynov\source\repos\Project2.1\Project2.1\mystring.c(83,1): warning C4090: инициализация: разные квалификаторы "const"
+C:\Users\domartynov\source\repos\Project2.1\Project2.1\mystring.c(84,1): warning C4090: инициализация: разные квалификаторы "const"
+  Создание кода...
+C:\Users\domartynov\source\repos\Project2.1\Project2.1\mystring.c(91): error C4700: использована неинициализированная локальная переменная "res"
