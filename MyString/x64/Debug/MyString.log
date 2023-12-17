@@ -1,0 +1,4 @@
+﻿  functions.c
+D:\SparkleSpace\Projects\Programing\MyString\functions.c(61,3): warning C4047: return: "int" отличается по уровням косвенного обращения от "void *"
+D:\SparkleSpace\Projects\Programing\MyString\functions.c(75,2): warning C4047: return: "int" отличается по уровням косвенного обращения от "const char *"
+  MyString.vcxproj -> D:\SparkleSpace\Projects\Programing\MyString\x64\Debug\MyString.exe
