@@ -1,4 +1,5 @@
 #include "functions.h"
+#include<time.h>
 
 
 void rand_matrix(int** matrix_, unsigned size_)
@@ -6,7 +7,7 @@ void rand_matrix(int** matrix_, unsigned size_)
 	for (unsigned i = 0; i < size_; i++)
 	{
 		for (unsigned j = 0; j < size_; j++)
-			matrix_[i][j] = rand() % 10 + 1;
+			matrix_[i][j] = 1 + rand() % 10;
 	}
 }
 
