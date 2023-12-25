@@ -4,28 +4,28 @@
 #include <time.h>
 #include <math.h>
 
-void matr_rand(int** matrix_, int size_)
+void matr_rand(double** matrix_, int size_)
 {
 	for (int i = 0; i < size_; i++)
 	{
 		for (int j = 0; j < size_; j++)
 		{
-			matrix_[i][j] = rand() % 10;
+			matrix_[i][j] = rand() % 8;
 		}
 	}
 }
 
-void matr_print(int** matrix_, int size_)
+void matr_print(double** matrix_, int size_)
 {
 	for (int i = 0; i < size_; i++)
 	{
 		for (int j = 0; j < size_; j++)
-			printf("%4d ", matrix_[i][j]);
+			printf("%5.2lf ", matrix_[i][j]);
 		printf("\n");
 	}
 }
 
-void matr_minor(int** matrix_, int** minor_, int size_, int del_row, int del_col)
+void matr_minor(double** matrix_, double** minor_, int size_, int del_row, int del_col)
 {
 	int minor_row = 0;
 
@@ -46,9 +46,9 @@ void matr_minor(int** matrix_, int** minor_, int size_, int del_row, int del_col
 	}
 }
 
-int matr_determ(int** matrix_, int size_)
+double matr_determ(double** matrix_, int size_)
 {
-	int determinant = 0;
+	double determinant = 0;
 
 	if (size_ == 1)
 		determinant = matrix_[0][0];
@@ -60,9 +60,9 @@ int matr_determ(int** matrix_, int size_)
 		for (int i = 0; i < size_; i++)
 		{
 			int minor_size = size_ - 1;
-			int** minor = calloc(minor_size, sizeof(int));
+			double** minor = calloc(minor_size, sizeof(double));
 			for (int k = 0; k < minor_size; k++)
-				minor[k] = calloc(minor_size, sizeof(int));
+				minor[k] = calloc(minor_size, sizeof(double));
 
 			matr_minor(matrix_, minor, size_, 0, i);
 			determinant += k * matrix_[0][i] * matr_determ(minor, minor_size);
@@ -73,9 +73,11 @@ int matr_determ(int** matrix_, int size_)
 	return determinant;
 }
 
-void matr_reverse(int** matrix_, int** reverse_, int size_)
+void matr_reverse(double** matrix_, double** reverse_, int size_)
 {
-	int determinant = matr_determ(matrix_, size_);
+	double determinant = 0;
+	determinant = matr_determ(matrix_, size_);
+	printf("Det of A = %5.2lf\n\n", determinant);
 	if (determinant != 0)
 	{
 		for (int i = 0; i < size_; i++)
@@ -83,22 +85,24 @@ void matr_reverse(int** matrix_, int** reverse_, int size_)
 			for(int j = 0; j < size_; j++)
 			{
 				int minor_size = size_ - 1;
-				int** minor = calloc(minor_size, sizeof(int));
+				double** minor = calloc(minor_size, sizeof(double));
 				for (int i = 0; i < minor_size; i++)
-					minor[i] = calloc(minor_size, sizeof(int));
+					minor[i] = calloc(minor_size, sizeof(double));
 
 				matr_minor(matrix_, minor, size_, i, j);
-				reverse_[i][j] = pow(-1, i + j + 2) * matr_determ(minor, minor_size) / determinant;
+				reverse_[i][j] = pow(-1, i + j) * matr_determ(minor, minor_size) / determinant;
 			}
 		}
 	}
 }
 
-void matr_transpon(int** matrix_, int** transpon_, int size_)
+void matr_transpon(double** matrix_, double** transpon_, int size_)
 {
 	for (int i = 0; i < size_; i++)
 	{
 		for (int j = 0; j < size_; j++)
+		{
 			transpon_[j][i] = matrix_[i][j];
+		}
 	}
 }

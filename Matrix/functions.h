@@ -5,9 +5,9 @@ void matr_print(int** matrix_, int size_);
 
 void matr_minor(int** matrix_, int** minor_, int size_, int del_row, int del_col);
 
-int matr_determ(int** matrix_, int size_);
+double matr_determ(int** matrix_, int size_);
 
-void matr_reverse(int** matrix_, int** reverse_, int size_);
+void matr_reverse(int** matrix_, double** reverse_, int size_);
 
 void matr_transpon(int** matrix_, int** transpon_, int size_);
 

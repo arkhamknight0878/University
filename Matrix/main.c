@@ -9,31 +9,31 @@ int main()
 	scanf_s("%d", &size);
 	
 	/*Выделяем память под матрицу*/
-	int** matrix = calloc(size, sizeof(int));
+	double** matrix = calloc(size, sizeof(double));
 	for (int i = 0; i < size; i++)
-		matrix[i] = calloc(size, sizeof(int));
+		matrix[i] = calloc(size, sizeof(double));
 
 	/*Выделяем память под обратную матрицу*/
-	int** reverse = calloc(size, sizeof(int));
+	double** reverse = calloc(size, sizeof(double));
 	for (int i = 0; i < size; i++)
-		reverse[i] = calloc(size, sizeof(int));
+		reverse[i] = calloc(size, sizeof(double));
 
 	/*Выделяем память под транспонирование матрицы*/
-	int** transpon = calloc(size, sizeof(int));
+	double** transpon = calloc(size, sizeof(double));
 	for (int i = 0; i < size; i++)
-		transpon[i] = calloc(size, sizeof(int));
+		transpon[i] = calloc(size, sizeof(double));
 
-	printf("Matrix A:\n\n");
+	printf("\nMatrix A:\n\n");
 	matr_rand(matrix, size);
 	matr_print(matrix, size);
-	printf("\n\n");
+	printf("\n");
 
-	printf("Almost Reverse Matrix:\n\n");
 	matr_reverse(matrix, reverse, size);
+	printf("Almost Reversed Matrix:\n\n");
 	matr_print(reverse, size);
-	printf("\n\n");
+	printf("\n");
 
-	printf("Reverse of Matrix A:\n\n");
+	printf("Reversed A Matrix:\n\n");
 	matr_transpon(reverse, transpon, size);
 	matr_print(transpon, size);
 
