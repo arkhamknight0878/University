@@ -4,23 +4,23 @@
 
 int main()
 {
-	int size = 0;
+	unsigned size = 0;
 	printf("Enter Matrix Size\nMatrix Size = ");
-	scanf_s("%d", &size);
+	scanf_s("%u", &size);
 	
 	/*Выделяем память под матрицу*/
 	double** matrix = calloc(size, sizeof(double));
-	for (int i = 0; i < size; i++)
+	for (unsigned i = 0; i < size; i++)
 		matrix[i] = calloc(size, sizeof(double));
 
 	/*Выделяем память под обратную матрицу*/
 	double** reverse = calloc(size, sizeof(double));
-	for (int i = 0; i < size; i++)
+	for (unsigned i = 0; i < size; i++)
 		reverse[i] = calloc(size, sizeof(double));
 
 	/*Выделяем память под транспонирование матрицы*/
 	double** transpon = calloc(size, sizeof(double));
-	for (int i = 0; i < size; i++)
+	for (unsigned i = 0; i < size; i++)
 		transpon[i] = calloc(size, sizeof(double));
 
 	printf("\nMatrix A:\n\n");
