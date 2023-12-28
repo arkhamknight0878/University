@@ -1,0 +1,4 @@
+The Batman|Action|1989|06|23|16|10|126|35|
+The Shining|1980|05|23|10|05|146|Thriller, Detective|19|
+Back to the Future|1985|10|21|24|15|116|SinceFiction, Comedy|19|
+Ghostbusters|1984|06|07|23|30|105|Comedy|10|
