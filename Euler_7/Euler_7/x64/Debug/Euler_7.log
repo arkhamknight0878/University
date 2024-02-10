@@ -1,0 +1,4 @@
+﻿  functions.c
+C:\Users\domartynov\source\repos\Euler_7\Euler_7\functions.c(10,29): warning C4554: "&": проверьте приоритет операторов на ошибки; для уточнения приоритета используйте скобки
+C:\Users\domartynov\source\repos\Euler_7\Euler_7\functions.c(22,11): warning C4018: <=: несоответствие типов со знаком и без знака
+  Euler_7.vcxproj -> C:\Users\domartynov\source\repos\Euler_7\x64\Debug\Euler_7.exe
