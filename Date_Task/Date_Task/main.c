@@ -4,9 +4,17 @@
 
 int main()
 {
-	Date* earlier = calloc(6, sizeof(unsigned));
-	Date* later = calloc(6, sizeof(unsigned));
-	Date* diff = calloc(6, sizeof(unsigned));
+	Date* earlier = malloc(sizeof(Date));
+	if (earlier == NULL)
+		return 1;
+
+	Date* later = malloc(sizeof(Date));
+	if (later == NULL)
+		return 1;
+
+	Date* diff = malloc(sizeof(Date));
+	if (diff == NULL)
+		return 1;
 
 	date_create(earlier);
 	date_create(later);
