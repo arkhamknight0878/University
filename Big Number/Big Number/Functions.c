@@ -22,7 +22,7 @@ BN* BG_Create(digit* number_)
 
 	for (unsigned i = 0; i < bn->size; ++i)
 	{
-		bn->big_number[i] = number_[i];
+		bn->big_number[i] = number_[i] - '0';
 	}
 
 	return bn;
