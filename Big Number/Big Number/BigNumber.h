@@ -1,11 +1,12 @@
 #pragma once
-#include<stdlib.h>
+
+typedef unsigned char digit;
 
 typedef struct BigNumber
 {
-	size_t size;
-	char* big_number;
-} BG;
+	unsigned size;
+	digit* big_number;
+} BN;
 
 /* ~ Алгебраические операции
    ~ Ввод
