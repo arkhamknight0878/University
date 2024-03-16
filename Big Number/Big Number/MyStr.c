@@ -2,6 +2,9 @@
 
 bool IsIntString(digit* str_)
 {
+	if (*str_ == '-')
+		str_++;
+
 	while (*str_)
 	{
 		if (*str_ < '0' || *str_ > '9')

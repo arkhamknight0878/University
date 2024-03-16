@@ -1,4 +1,2 @@
-﻿  Functions.c
-C:\Users\domartynov\source\repos\Big Number\Big Number\Functions.c(17,15): warning C4267: =: преобразование из "size_t" в "unsigned int"; возможна потеря данных
-C:\Users\domartynov\source\repos\Big Number\Big Number\Functions.c(18,40): warning C4020: malloc: слишком много фактических параметров
+﻿  main.c
   Big Number.vcxproj -> C:\Users\domartynov\source\repos\Big Number\x64\Debug\Big Number.exe

@@ -3,16 +3,24 @@
 
 int main()
 {
-	unsigned size = 0;
+    char str1[] = "090";
+    char str2[] = "099";
 
-	printf("Enter the size of Number:\n");
-	scanf_s("%u", &size);
+    BN* bn1 = BN_Create(str1);
+    if (bn1 == NULL)
+        printf("bn == NULL!\n");
 
-	char* big_number_arr = calloc(size, sizeof(char));
-	if (big_number_arr == NULL)
-		return -1;
+    BN* bn2 = BN_Create(str2);
+    if (bn2 == NULL)
+        printf("bn == NULL!\n");
 
-	BG_RandArr(size, big_number_arr);
+    BN_Print(bn1);
+    BN_Print(bn2);
 
-	return 0;
+    BN* res;
+    res = BN_Adition(bn1, bn2);
+
+    BN_Print(res);
+
+    return 0;
 }
