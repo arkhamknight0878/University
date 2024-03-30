@@ -24,14 +24,9 @@ bool Insert(BinTreeNode** tree_, BinTreeNode* node_)
 		node_->parent = *tree_;
 
 		if (node_->data > (*tree_)->data)
-		{
-			
 			return Insert((*tree_)->right, node_);
-		}
 		else if (node_->data < (*tree_)->data)
-		{
 			return Insert((*tree_)->left, node_);
-		}
 	}
 
 	return true;
