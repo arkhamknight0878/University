@@ -12,7 +12,7 @@ size_t Euler9(size_t el_sum_)
 			double c = sqrt(pow((double)a, 2) + pow((double)b, 2));
 
 			if ((a + b + c) == el_sum_)
-				return (a * b * c);
+				return (size_t)(a * b * c);
 		}
 	}
 }

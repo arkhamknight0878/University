@@ -1,4 +1,3 @@
 ﻿  Functions.c
-C:\Users\domartynov\source\repos\Euler 9\Euler 9\Functions.c(15,12): warning C4244: return: преобразование "double" в "size_t", возможна потеря данных
-C:\Users\domartynov\source\repos\Euler 9\Euler 9\Functions.c(28): warning C4715: Euler9: значение возвращается не при всех путях выполнения
+C:\Users\domartynov\source\repos\Euler 9\Euler 9\Functions.c(18): warning C4715: Euler9: значение возвращается не при всех путях выполнения
   Euler 9.vcxproj -> C:\Users\domartynov\source\repos\Euler 9\x64\Debug\Euler 9.exe
