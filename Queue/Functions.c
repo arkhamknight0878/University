@@ -23,16 +23,16 @@ void Queue_Push(Queue* queue_, void* data_)
 void* Queue_Pop(Queue* queue_)
 {
 	if (!queue_)
-		return;
+		return NULL;
 
 	void* data = queue_->top->data;
 
-	QueueElement* element = queue_->top->next;
+	QueueElement* temp = queue_->top;
 
-	free(queue_->top);
+	queue_->top = queue_->top->next;
 
+	free(temp);
 	queue_->size--;
-	queue_->top = element;
 
 	return data;
 }
