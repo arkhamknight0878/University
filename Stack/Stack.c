@@ -23,12 +23,12 @@ void* Stack_Pop(Stack* stack_)
 
 	void* data = stack_->top->data;
 
-	StackElement* element = stack_->top->next;
+	StackElement* element = stack_->top;
 
-	free(stack_->top);
+	stack_->top = stack->top->next;
 
+	free(element);
 	stack_->size--;
-	stack_->top = element;
 
 	return data;
 }
