@@ -1,6 +1,6 @@
 #include "MyStr.h"
 
-bool Is_IntArr(digits* str_)
+bool Is_IntArr(number* str_)
 {
 	if (str_ == NULL)
 		return;
@@ -19,7 +19,7 @@ bool Is_IntArr(digits* str_)
 	return true;
 }
 
-size_t StrLen(digits* str_)
+size_t StrLen(number* str_)
 {
 	if (str_ == NULL)
 		return;

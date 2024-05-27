@@ -2,6 +2,6 @@
 
 #include <stdbool.h>
 
-bool Is_IntArr(digits* str_);
+bool Is_IntArr(number* str_);
 
-size_t StrLen(digits* str_);
+size_t StrLen(number* str_);
