@@ -45,12 +45,12 @@ struct Modifiers
 // Character Type
 struct Character
 {
-	char* name;		// Character Name
-	size_t hits;		// Character Hit Points
-	size_t hit_dice;	// Character Hit Dice
-	size_t lvl;		// Character Level
-	size_t race;		// Character Race
-	size_t klass;		// Character Klass
+	char* name;				// Character Name
+	size_t hits;			// Character Hit Points
+	size_t hit_dice;		// Character Hit Dice
+	size_t lvl;				// Character Level
+	size_t race;			// Character Race
+	size_t klass;			// Character Klass
 	Abilities* abilities;	// Character Abilities
 	Modifiers* modifiers;	// Character Abilities Modificators
 };
@@ -245,7 +245,7 @@ void Abilities_Adjust(Character* character_)
 the highest three dice on a piece of scratch paper. Do\
 this five more times, so that you have seven numbers\n\n\
 Step 2: Now take your six numbers and write each number\
-beside one of your characterâ€™s six abilities:\n");
+beside one of your character’s six abilities:\n");
 	printf("\n");
 
 	printf("1. Strength	- ");
@@ -1099,3 +1099,109 @@ void Delete_By_Key(DataBase* database_)
 		break;
 	}
 }
+
+// ------------------------------------- Search Functions -------------------------------------
+
+void Search_By_Race(DataBase* database_, Race race_)
+{
+	if (!database_)
+		return;
+
+	printf("Positions of Elements Appropriate to Chosen Race: ");
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->race == race_)
+			printf("%Iu, ", i + 1);
+	}
+	printf("\n");
+}
+
+void Search_By_Klass(DataBase* database_, Klass klass_)
+{
+	if (!database_)
+		return;
+
+	printf("Positions of Elements Appropriate to Chosen Klass: ");
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->klass == klass_)
+			printf("%Iu, ", i + 1);
+	}
+	printf("\n");
+}
+
+void Search_By_Level(DataBase* database_, size_t level_)
+{
+	if (!database_)
+		return;
+
+	printf("Positions of Elements Appropriate to Chosen Level: ");
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->lvl == level_)
+			printf("%Iu, ", i + 1);
+	}
+	printf("\n");
+}
+
+void Search_By_Key(DataBase* database_)
+{
+	size_t option = 0;
+
+	printf("How Do You Want To Delete?\n");
+	Keys_List_Print();
+
+	option = Option_Chooing(3);
+
+	switch (option)
+	{
+	case 1:
+		printf("Representatives of What Race Do You Want to Find?\n");
+		Race_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Search_By_Race(database_, elf);
+			break;
+		case 2:
+			Search_By_Race(database_, gnome);
+			break;
+		case 3:
+			Search_By_Race(database_, human);
+			break;
+		}
+		break;
+	case 2:
+		printf("Representatives of What Klass Do You Want to Find?\n");
+		Klass_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Search_By_Klass(database_, paladin);
+			break;
+		case 2:
+			Search_By_Klass(database_, barbarian);
+			break;
+		case 3:
+			Search_By_Klass(database_, rogue);
+			break;
+		}
+		break;
+	case 3:
+		printf("Representatives of What Level Do You Want to Find?\n> ");
+		scanf_s("%Iu", &option);
+
+		Search_By_Level(database_, option);
+		break;
+	}
+}
+

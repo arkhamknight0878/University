@@ -28,6 +28,9 @@ int main()
 		case 3:
 			Data_Base_List_Print(database);
 			break;
+		case 5:
+			Search_By_Key(database);
+			break;
 		case 6:
 			Delete_By_Key(database);
 			break;

@@ -251,7 +251,36 @@ void Delete_By_Klass(DataBase* database_, Klass klass_);
 void Delete_By_Level(DataBase* database_, size_t level_);
 
 /**
- * @brief : Deletes Characters By Key With 3 previous Functions (depends on what key)
+ * @brief : Deletes Characters By Key With 3 previous Functions (depends on what key customer choose)
  * @param database_ : Database
  */
 void Delete_By_Key(DataBase* database_);
+
+// ------------------------------------- Search Functions -------------------------------------
+
+/**
+ * @brief : Searches Characters By Race & Prints Their Positions
+ * @param database_ : Database
+ * @param race_ : Key Race
+ */
+void Search_By_Race(DataBase* database_, Race race_);
+
+/**
+ * @brief : Searches Characters By Klass & Prints Their Positions
+ * @param database_ : Database
+ * @param klass_ : Key Klass
+ */
+void Search_By_Klass(DataBase* database_, Klass klass_);
+
+/**
+ * @brief : Searches Characters By Level & Prints Their Positions
+ * @param database_ : Database
+ * @param level_ : Key Level
+ */
+void Search_By_Level(DataBase* database_, size_t level_);
+
+/**
+ * @brief : Searches Characters By Key With 3 Previous Functions (depends on what key customer choose)
+ * @param database_ : Database
+ */
+void Search_By_Key(DataBase* database_);
