@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+// Races Values
 typedef enum Race
 {
 	elf = 1,
@@ -11,6 +12,7 @@ typedef enum Race
 	human
 }Race;
 
+// Klasses Values
 typedef enum Klass
 {
 	paladin = 1,
@@ -18,6 +20,7 @@ typedef enum Klass
 	rogue
 }Klass;
 
+// Abities
 struct Abilities
 {
 	size_t strength;
@@ -28,6 +31,7 @@ struct Abilities
 	size_t charisma;
 };
 
+// Abilities Modifiers
 struct Modifiers
 {
 	int strength;
@@ -38,16 +42,17 @@ struct Modifiers
 	int charisma;
 };
 
+// Character Type
 struct Character
 {
-	char* name;
-	size_t hits;
-	size_t hit_dice;
-	size_t lvl;
-	size_t race;
-	size_t klass;
-	Abilities* abilities;
-	Modifiers* modifiers;
+	char* name;				// Character Name
+	size_t hits;			// Character Hit Points
+	size_t hit_dice;		// Character Hit Dice
+	size_t lvl;				// Character Level
+	size_t race;			// Character Race
+	size_t klass;			// Character Klass
+	Abilities* abilities;	// Character Abilities
+	Modifiers* modifiers;	// Character Abilities Modificators
 };
 
 struct DataBase
@@ -57,14 +62,7 @@ struct DataBase
 	size_t capasity;
 };
 
-void Character_Menu_Print()
-{
-	printf("What Do You Want to Do?\n");
-	printf("1. Create Character\n");
-	printf("2. See Character Info\n");
-	printf("3. Exit\n");
-	printf("> ");
-}
+// ------------------------------ Interactive Menu Functions ------------------------------
 
 size_t Option_Chooing(size_t max_opt_amount_)
 {
@@ -78,6 +76,85 @@ size_t Option_Chooing(size_t max_opt_amount_)
 	}
 
 	return option;
+}
+
+// ------------------------------ Search & Sort Functions ------------------------------
+
+void Merge(unsigned int* arr_, unsigned int left_, unsigned int midle_, unsigned int right_)
+{
+	unsigned int len1 = midle_ - left_ + 1;
+	unsigned int len2 = right_ - midle_;
+
+	unsigned int* left = (unsigned int*)calloc(len1, sizeof(unsigned int));
+	if (!left)
+		return;
+
+	unsigned int* right = (unsigned int*)calloc(len2, sizeof(unsigned int));
+	if (!right)
+		return;
+
+	for (unsigned int i = 0; i < len1; ++i)
+		left[i] = arr_[left_ + i];
+
+	for (unsigned int j = 0; j < len2; ++j)
+		right[j] = arr_[midle_ + 1 + j];
+
+	unsigned int i = 0;
+	unsigned int j = 0;
+
+	while (i < len1 && j < len2)
+	{
+		if (left[i] <= right[j])
+		{
+			arr_[left_] = left[i];
+			++i;
+		}
+		else
+		{
+			arr_[left_] = right[j];
+			++j;
+		}
+
+		++left_;
+	}
+
+	while (i < len1)
+	{
+		arr_[left_] = left[i];
+		++i;
+		++left_;
+	}
+
+	while (j < len2)
+	{
+		arr_[left_] = right[j];
+		++j;
+		++left_;
+	}
+
+	free(left);
+	free(right);
+}
+
+void Merge_Sort_Recursive(unsigned int* arr_, unsigned int left_, unsigned int right_)
+{
+	if (left_ < right_)
+	{
+		unsigned int midle = left_ + (right_ - left_) / 2;
+
+		Merge_Sort_Recursive(arr_, left_, midle);
+		Merge_Sort_Recursive(arr_, midle + 1, right_);
+
+		Merge(arr_, left_, midle, right_);
+	}
+}
+
+void Merge_Sort(unsigned int* arr_, unsigned int size_)
+{
+	if (!arr_)
+		return;
+
+	Merge_Sort_Recursive(arr_, 0, size_ - 1);
 }
 
 // ------------------------------ Character Creation Functions ------------------------------
@@ -131,6 +208,9 @@ void Race_Choosing(Character* character_)
 
 void Klass_Choosing(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("Now, please, Choose Your Character Klass:\n");
 	Klass_List_Print();
 	printf("> ");
@@ -156,6 +236,9 @@ void Klass_Choosing(Character* character_)
 
 void Abilities_Adjust(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("Adjust Characteristics of Your Character:\n");
 	printf("\n");
 	printf("Step 1: Roll four 6-sided dice and record the total of\
@@ -237,6 +320,9 @@ int Modifier_Value(size_t ability_value_)
 
 void Abilities_Modifiers(Character* character_)
 {
+	if (!character_)
+		return;
+
 	character_->modifiers->charisma = Modifier_Value(character_->abilities->charisma);
 	character_->modifiers->constitution = Modifier_Value(character_->abilities->constitution);
 	character_->modifiers->dexterety = Modifier_Value(character_->abilities->dexterety);
@@ -368,6 +454,9 @@ Character* Character_Create()
 
 void Race_Print(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("Race: ");
 
 	switch (character_->race)
@@ -386,6 +475,9 @@ void Race_Print(Character* character_)
 
 void Klass_Print(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("Klass: ");
 
 	switch (character_->klass)
@@ -404,6 +496,9 @@ void Klass_Print(Character* character_)
 
 void Abilities_Table_Print(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("\n+----------------------+-----------+------------+\n");
 	printf("|       Ability        |   Value   |  Modifier  |\n");
 	printf("+----------------------+-----------+------------+\n");
@@ -423,6 +518,9 @@ void Abilities_Table_Print(Character* character_)
 
 void Info_Print(Character* character_)
 {
+	if (!character_)
+		return;
+
 	printf("Name: %s%10s: %Iu\n", character_->name, "Level", character_->lvl);
 	printf("Hits: %Iu%10s: D%Iu\n",character_->hits, "Hit Dice", character_->hit_dice);
 	printf("-----------------------------------\n");
@@ -435,7 +533,7 @@ void Info_Print(Character* character_)
 
 // ------------------------------ Level Up Functions ------------------------------
 
-void Abilities_Print()
+void Abilities_List_Print()
 {
 	printf("1. Strength\n");
 	printf("2. Dexterity\n");
@@ -448,6 +546,9 @@ void Abilities_Print()
 
 void Hits_Adjusting(Character* character_)
 {
+	if (!character_)
+		return;
+
 	size_t max_hits_adjusting = 0;
 
 	printf("Now Let's Increase Your Hits\n");
@@ -467,6 +568,9 @@ void Hits_Adjusting(Character* character_)
 
 void LVL_Up(Character* character_)
 {
+	if (!character_)
+		return;
+
 	if (character_->lvl == 20)
 	{
 		printf("You Have Reached the Peak of Your Capabilities.\nThere Is No Further Way...");
@@ -479,7 +583,7 @@ void LVL_Up(Character* character_)
 
 	printf("Congrats With Level %Iu! You Can Increase 1 Ability by 2 Now!\n", character_->lvl);
 	printf("Which Abilitie Do You Want Increse?\n");
-	Abilities_Print();
+	Abilities_List_Print();
 
 	option = Option_Chooing(6);
 
@@ -557,14 +661,18 @@ The Fate of The World Or Even The Fundamental Order of The Multiverse Is In Your
 
 size_t All_Abilities_Count(Character* character_)
 {
-	size_t abilities = character_->abilities->charisma + character_->abilities->constitution + character_->abilities->dexterety +
-		character_->abilities->inteligence + character_->abilities->strength + character_->abilities->wisdom;
+	if (!character_)
+		return;
 
-	return abilities;
+	return character_->abilities->charisma + character_->abilities->constitution + character_->abilities->dexterety +
+		character_->abilities->inteligence + character_->abilities->strength + character_->abilities->wisdom;
 }
 
 void Abilities_Zeroing(Character* character_)
 {
+	if (!character_)
+		return;
+
 	character_->abilities->charisma = 1;
 	character_->abilities->constitution = 1;
 	character_->abilities->dexterety = 1;
@@ -575,6 +683,9 @@ void Abilities_Zeroing(Character* character_)
 
 void Reabilities(Character* character_)
 {
+	if (!character_)
+		return;
+
 	size_t abilities_points = All_Abilities_Count(character_) - 6;
 	size_t option = 0;
 
@@ -597,7 +708,7 @@ void Reabilities(Character* character_)
 		}
 
 		printf("Which Ability Do You Want to Increase by %Iu?\n", add_amount);
-		Abilities_Print();
+		Abilities_List_Print();
 
 		option = Option_Chooing(6);
 
@@ -671,23 +782,30 @@ void Reabilities(Character* character_)
 
 void Rename(Character* character_)
 {
+	if (!character_)
+		return;
+
 	char* temp = (char*)realloc(character_->name, 21);
 	if (!temp)
 		return;
+	else
+	{
+		character_->name = temp;
 
-	character_->name = temp;
-
-	printf("Please, Enter New Character Name(Max Length: 20)\n> ");
-	scanf_s("%s", character_->name, 20);
+		printf("Please, Enter New Character Name(Max Length: 20)\n> ");
+		scanf_s("%s", character_->name, 20);
+	}
 }
 
 void Character_Delete(Character*  character_)
 {
+	if (!character_)
+		return;
+
 	free(character_->name);
 	free(character_->abilities);
 	free(character_->modifiers);
 	free(character_);
-
 }
 
 // ------------------------------ Data Base Functions ------------------------------
@@ -763,8 +881,8 @@ void Add_Element(DataBase* database_, const char* filename_)
 		Character* temp = (Character*)realloc(*database_->character, database_->size);
 		if (!temp)
 			return;
-
-		*database_->character = temp;
+		else
+			*database_->character = temp;
 	}
 }
 
@@ -781,6 +899,9 @@ void Edit_Menu_Print()
 
 void Names_Print(DataBase* database_)
 {
+	if (!database_)
+		return;
+
 	for (size_t i = 0; i < database_->size; i++)
 		printf("%Iu. %s\n", i + 1, database_->character[i]->name);
 
@@ -789,6 +910,9 @@ void Names_Print(DataBase* database_)
 
 void Edit_Element(DataBase* database_)
 {
+	if (!database_)
+		return;
+
 	size_t index = 0;
 
 	size_t option = 0;
@@ -833,6 +957,9 @@ void Edit_Element(DataBase* database_)
 
 void List_Print(DataBase* database_)
 {
+	if (!database_)
+		return;
+
 	if (database_->size == 0)
 	{
 		printf("There Is No Characters Now In The Database");
@@ -853,5 +980,15 @@ void List_Print(DataBase* database_)
 
 void Sort_By_Race(DataBase* database_)
 {
+	if (!database_)
+		return;
+
+	size_t option = 0;
+
+	printf("Which Race Do You Want As Sort Key?\n");
+	Race_List_Print();
+
+	option = Option_Chooing(3);
+
 
 }
