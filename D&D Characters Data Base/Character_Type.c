@@ -45,12 +45,12 @@ struct Modifiers
 // Character Type
 struct Character
 {
-	char* name;				// Character Name
-	size_t hits;			// Character Hit Points
-	size_t hit_dice;		// Character Hit Dice
-	size_t lvl;				// Character Level
-	size_t race;			// Character Race
-	size_t klass;			// Character Klass
+	char* name;		// Character Name
+	size_t hits;		// Character Hit Points
+	size_t hit_dice;	// Character Hit Dice
+	size_t lvl;		// Character Level
+	size_t race;		// Character Race
+	size_t klass;		// Character Klass
 	Abilities* abilities;	// Character Abilities
 	Modifiers* modifiers;	// Character Abilities Modificators
 };
@@ -145,6 +145,7 @@ void Klass_List_Print()
 	printf("1. Paladin\n");
 	printf("2. Barbarian\n");
 	printf("3. Rogue\n");
+	printf("> ");
 }
 
 void Race_Choosing(Character* character_)
@@ -186,7 +187,6 @@ void Klass_Choosing(Character* character_)
 
 	printf("Now, please, Choose Your Character Klass:\n");
 	Klass_List_Print();
-	printf("> ");
 
 	size_t option = Option_Chooing(3);
 
@@ -218,7 +218,7 @@ void Abilities_Adjust(Character* character_)
 the highest three dice on a piece of scratch paper. Do\
 this five more times, so that you have seven numbers\n\n\
 Step 2: Now take your six numbers and write each number\
-beside one of your character’s six abilities:\n");
+beside one of your characterâ€™s six abilities:\n");
 	printf("\n");
 
 	printf("1. Strength	- ");
