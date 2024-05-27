@@ -28,11 +28,15 @@ size_t Option_Chooing(size_t max_opt_amount_);
 
 // --------------------------------- Search & Sort Functions ----------------------------------
 
-void Merge(unsigned int* arr_, unsigned int left_, unsigned int midle_, unsigned int right_);
+//void Merge(Character** character_, size_t left_, size_t midle_, size_t right_, Race race_);
+//
+//void Merge_Sort_Recursive(Character** character_, size_t left_, size_t right_, Race race_);
+//
+//void Merge_Sort(Character** character_, size_t size_, Race race_);
 
-void Merge_Sort_Recursive(unsigned int* arr_, unsigned int left_, unsigned int right_);
+int Partition(Character** character_, size_t low_, size_t high_, int (*compare_)(const void*, const void*));
 
-void Merge_Sort(unsigned int* arr_, unsigned int size_);
+void Quick_Sort(Character** character_, size_t low_, size_t high_, int (*compare_)(const void*, const void*));
 
 // ------------------------------- Character Creation Functions -------------------------------
 
@@ -217,7 +221,7 @@ void Edit_Element(DataBase* database_);
  */
 void Data_Base_List_Print(DataBase* database_);
 
-// --------------------------------- Keys Requaered Functions ---------------------------------
+// ---------------------------------- Key Requaered Functions ---------------------------------
 
 void Keys_List_Print();
 
@@ -231,7 +235,7 @@ void Sort_By_Race(DataBase* database_);
 
 /**
  * @brief : Deletes Characters By Race
- * @param database_ : Database
+ * @param database_ : Data Base
  * @param race_ : Key Race
  */
 void Delete_By_Race(DataBase* database_, Race race_);
@@ -245,14 +249,14 @@ void Delete_By_Klass(DataBase* database_, Klass klass_);
 
 /**
  * @brief : Deletes Characters By Level
- * @param database_ : Database
+ * @param database_ : Data Base
  * @param level_ : Key Level
  */
 void Delete_By_Level(DataBase* database_, size_t level_);
 
 /**
  * @brief : Deletes Characters By Key With 3 previous Functions (depends on what key customer choose)
- * @param database_ : Database
+ * @param database_ : Data Base
  */
 void Delete_By_Key(DataBase* database_);
 
@@ -260,7 +264,7 @@ void Delete_By_Key(DataBase* database_);
 
 /**
  * @brief : Searches Characters By Race & Prints Their Positions
- * @param database_ : Database
+ * @param database_ : Data Base
  * @param race_ : Key Race
  */
 void Search_By_Race(DataBase* database_, Race race_);
@@ -274,13 +278,42 @@ void Search_By_Klass(DataBase* database_, Klass klass_);
 
 /**
  * @brief : Searches Characters By Level & Prints Their Positions
- * @param database_ : Database
+ * @param database_ : Data Base
  * @param level_ : Key Level
  */
 void Search_By_Level(DataBase* database_, size_t level_);
 
 /**
  * @brief : Searches Characters By Key With 3 Previous Functions (depends on what key customer choose)
- * @param database_ : Database
+ * @param database_ : Data Base
  */
 void Search_By_Key(DataBase* database_);
+
+// -------------------------------------- Sort Functions --------------------------------------
+
+/**
+ * @brief : Sorts Characters By Race
+ * @param database_ : Data Base
+ * @param race_ : Key Race
+ */
+void Sort_By_Race(DataBase* database_);
+
+/**
+ * @brief : Sorts Characters By Race
+ * @param database_ : Data Base
+ * @param klass_ : Key Klass
+ */
+void Sort_By_Klass(DataBase* database_);
+
+/**
+ * @brief : Sorts Characters By Race
+ * @param database_ : Data Base
+ * @param level_ : Key Level
+ */
+void Sort_By_Level(DataBase* database_);
+
+/**
+ * @brief : Sorts Characters By Key With 3 Previous Functions (depends on what key customer choose)
+ * @param database_ : Data Base
+ */
+void Sort_By_Key(DataBase* database_);

@@ -80,81 +80,54 @@ size_t Option_Chooing(size_t max_opt_amount_)
 
 // --------------------------------- Search & Sort Functions ----------------------------------
 
-void Merge(unsigned int* arr_, unsigned int left_, unsigned int midle_, unsigned int right_)
+int Compare_By_Race(Character* character1_, Character* character2_)
 {
-	unsigned int len1 = midle_ - left_ + 1;
-	unsigned int len2 = right_ - midle_;
-
-	unsigned int* left = (unsigned int*)calloc(len1, sizeof(unsigned int));
-	if (!left)
-		return;
-
-	unsigned int* right = (unsigned int*)calloc(len2, sizeof(unsigned int));
-	if (!right)
-		return;
-
-	for (unsigned int i = 0; i < len1; ++i)
-		left[i] = arr_[left_ + i];
-
-	for (unsigned int j = 0; j < len2; ++j)
-		right[j] = arr_[midle_ + 1 + j];
-
-	unsigned int i = 0;
-	unsigned int j = 0;
-
-	while (i < len1 && j < len2)
-	{
-		if (left[i] <= right[j])
-		{
-			arr_[left_] = left[i];
-			++i;
-		}
-		else
-		{
-			arr_[left_] = right[j];
-			++j;
-		}
-
-		++left_;
-	}
-
-	while (i < len1)
-	{
-		arr_[left_] = left[i];
-		++i;
-		++left_;
-	}
-
-	while (j < len2)
-	{
-		arr_[left_] = right[j];
-		++j;
-		++left_;
-	}
-
-	free(left);
-	free(right);
+	return character1_->race - character2_->race;
 }
 
-void Merge_Sort_Recursive(unsigned int* arr_, unsigned int left_, unsigned int right_)
+int Compare_By_Klass(Character* character1_, Character* character2_)
 {
-	if (left_ < right_)
-	{
-		unsigned int midle = left_ + (right_ - left_) / 2;
-
-		Merge_Sort_Recursive(arr_, left_, midle);
-		Merge_Sort_Recursive(arr_, midle + 1, right_);
-
-		Merge(arr_, left_, midle, right_);
-	}
+	return character1_->klass - character2_->klass;
 }
 
-void Merge_Sort(unsigned int* arr_, unsigned int size_)
+int Compare_By_Level (Character* character1_, Character* character2_)
 {
-	if (!arr_)
-		return;
+	return character1_->lvl - character2_->lvl;
+}
 
-	Merge_Sort_Recursive(arr_, 0, size_ - 1);
+int Partition(Character** character_, size_t low_, size_t high_, int (*compare_)(const void*, const void*))
+{
+	Character* pivot = character_[high_];
+
+	int left = low_ - 1;
+
+	for (int j = low_; j <= high_ - 1; j++)
+	{
+		if ((*compare_)(&character_[j], pivot) < 0)
+		{
+			left++;
+
+			Character* temp = character_[left];
+			character_[left] = character_[j];
+			character_[j] = temp;
+		}
+	}
+
+	Character* temp = character_[left + 1];
+	character_[left + 1] = character_[high_];
+	character_[high_] = temp;
+
+	return (left + 1);
+}
+
+void Quick_Sort(Character** character_, size_t low_, size_t high_, int (*compare_)(const void*, const void*))
+{
+	if (low_ < high_) {
+		int partion = Partition(character_, low_, high_, compare_);
+
+		Quick_Sort(character_, low_, partion - 1, compare_);
+		Quick_Sort(character_, partion + 1, high_, compare_);
+	}
 }
 
 // ------------------------------- Character Creation Functions -------------------------------
@@ -989,21 +962,6 @@ void Keys_List_Print()
 	printf("> ");
 }
 
-void Sort_By_Race(DataBase* database_)
-{
-	if (!database_)
-		return;
-
-	size_t option = 0;
-
-	printf("Which Race Do You Want As Sort Key?\n");
-	Race_List_Print();
-
-	option = Option_Chooing(3);
-
-
-}
-
 // ------------------------------------- Delete Functions -------------------------------------
 
 void Delete_By_Race(DataBase* database_, Race race_)
@@ -1149,6 +1107,9 @@ void Search_By_Level(DataBase* database_, size_t level_)
 
 void Search_By_Key(DataBase* database_)
 {
+	if (!database_)
+		return;
+
 	size_t option = 0;
 
 	printf("How Do You Want To Delete?\n");
@@ -1205,3 +1166,89 @@ void Search_By_Key(DataBase* database_)
 	}
 }
 
+// -------------------------------------- Sort Functions --------------------------------------
+
+void Sort_By_Race(DataBase* database_)
+{
+	if (!database_)
+		return;
+
+	Quick_Sort(database_->character, 0, database_->size - 1, Compare_By_Race);
+}
+
+void Sort_By_Klass(DataBase* database_)
+{
+	if (!database_)
+		return;
+
+	Quick_Sort(database_->character, 0, database_->size - 1, Compare_By_Klass);
+}
+
+void Sort_By_Level(DataBase* database_)
+{
+	if (!database_)
+		return;
+
+	Quick_Sort(database_->character, 0, database_->size - 1, Compare_By_Level);
+}
+
+void Sort_By_Key(DataBase* database_)
+{
+	if (!database_)
+		return;
+
+	size_t option = 0;
+
+	printf("How Do You Want To Sort?\n");
+	Keys_List_Print();
+
+	option = Option_Chooing(3);
+
+	switch (option)
+	{
+	case 1:
+		printf("By What Race Do You Want To Sort?\n");
+		Race_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Sort_By_Race(database_, elf);
+			break;
+		case 2:
+			Sort_By_Race(database_, gnome);
+			break;
+		case 3:
+			Sort_By_Race(database_, human);
+			break;
+		}
+		break;
+	case 2:
+		printf("By What Klass Do You Want To Sort?\n");
+		Klass_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Sort_By_Klass(database_, paladin);
+			break;
+		case 2:
+			Sort_By_Klass(database_, barbarian);
+			break;
+		case 3:
+			Sort_By_Klass(database_, rogue);
+			break;
+		}
+		break;
+	case 3:
+		printf("By What Level Do You Want To Sort?\n> ");
+		scanf_s("%Iu", &option);
+
+		Sort_By_Level(database_, option);
+		break;
+	}
+}
