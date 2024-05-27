@@ -71,35 +71,63 @@ void BN_Print(BigNumber* big_number_)
 	printf("\n");
 }
 
+bool Is_Equal(BigNumber* bn1_, BigNumber* bn2_)
+{
+	if (!bn1_ || !bn2_)
+		return;
+
+	for (size_t i = 0; i < bn1_->size; i++)
+	{
+		if (bn1_->number[i] != bn2_->number[i])
+			return false;
+	}
+
+	return true;
+}
+
 BigNumber* BN_Dif(BigNumber* bn1_, BigNumber* bn2_)
 {
 	if (!bn1_ || !bn2_)
 		return NULL;
 
-	if (bn1_->is_negative == true && bn2_->is_negative == true)
+	if (bn1_->is_negative == bn2_->is_negative)
 		return BN_Sum(bn1_, bn2_);
 
-	BigNumber* res = (BigNumber*)malloc(sizeof(BigNumber));
-	if (!res)
+	BigNumber* result = (BigNumber*)malloc(sizeof(BigNumber));
+	if (!result)
 		return NULL;
 
-	res->size = (bn1_->size >= bn2_->size) ? bn1_->size : bn2_->size;
+	result->size = (bn1_->size >= bn2_->size) ? bn1_->size : bn2_->size;
 
-	res->number = (digits*)calloc(res->size, sizeof(digits));
-	if (!res->number)
+	result->number = (digits*)calloc(result->size, sizeof(digits));
+	if (!result->number)
 	{
-		free(res);
+		free(result);
 		return NULL;
 	}
 
-	BigNumber* greater_bn = (bn1_->size >= bn2_->size) ? bn1_ : bn2_;
-	BigNumber* lesser_bn = (bn1_->size <= bn2_->size) ? bn1_ : bn2_;
-
-	greater_bn->is_negative = (greater_bn == bn1_) ? bn1_->is_negative : bn2_->is_negative;
-	lesser_bn->is_negative = (lesser_bn == bn1_) ? bn1_->is_negative : bn2_->is_negative;
+	BigNumber* greater_bn = (bn1_->size > bn2_->size) ? bn1_ : bn2_;
+	BigNumber* lesser_bn = (bn1_->size < bn2_->size) ? bn1_ : bn2_;
 
 	if (bn1_->size == bn2_->size)
 	{
+		if (Is_Equal(bn1_, bn2_))
+		{
+			BigNumber* temp = (BigNumber*)realloc(result, 1);
+			if (!temp)
+			{
+				free(result->number);
+				free(result);
+				return NULL;
+			}
+			else
+			{
+				result = temp;
+				result->number[0] = '0';
+				return result;
+			}
+		}
+
 		for (size_t i = 0; i < bn1_->size; i++)
 		{
 			if (bn1_->number[i] > bn2_->number[i])
@@ -121,26 +149,29 @@ BigNumber* BN_Dif(BigNumber* bn1_, BigNumber* bn2_)
 
 	size_t difference = greater_bn->size - lesser_bn->size;
 
-	for (int i = greater_bn->size; i >= 0; i--)
+	for (int i = lesser_bn->size - 1; i >= 0; i--)
 	{
 		digits dig_diff = 0;
 
-		if (greater_bn->number[i] < lesser_bn->number[i - 1])
+		if (greater_bn->number[i + difference] < lesser_bn->number[i])
 		{
-			greater_bn->number[i - 1]--;
-			dig_diff = greater_bn->number[i] + 10 - lesser_bn->number[i - difference];
+			greater_bn->number[i + difference - 1]--;
+			dig_diff = greater_bn->number[i + difference] + 10 - lesser_bn->number[i];
 		}
 		else
-			dig_diff = greater_bn->number[i] - lesser_bn->number[i - difference];
+			dig_diff = greater_bn->number[i + difference] - lesser_bn->number[i];
 
-		res->number[i] = dig_diff;
+		result->number[i + difference] = dig_diff;
 	}
 
-	if (greater_bn->is_negative == true && lesser_bn->is_negative == false)
-		res->is_negative = true;
-	else res->is_negative = false;
+	greater_bn->is_negative = (greater_bn == bn1_) ? bn1_->is_negative : bn2_->is_negative;
+	lesser_bn->is_negative = (lesser_bn == bn1_) ? bn1_->is_negative : bn2_->is_negative;
 
-	return res;
+	if (greater_bn->is_negative == true && lesser_bn->is_negative == false)
+		result->is_negative = true;
+	else result->is_negative = false;
+
+	return result;
 }
 
 BigNumber* BN_Sum(BigNumber* bn1_, BigNumber* bn2_)
@@ -151,36 +182,86 @@ BigNumber* BN_Sum(BigNumber* bn1_, BigNumber* bn2_)
 	if (bn1_->is_negative != bn2_->is_negative)
 		return BN_Dif(bn1_, bn2_);
 
-	BigNumber* res = (BigNumber*)malloc(sizeof(BigNumber));
-	if (res == NULL)
+	BigNumber* result = (BigNumber*)malloc(sizeof(BigNumber));
+	if (result == NULL)
 		return NULL;
 
-	res->size = ((bn1_->size <= bn2_->size) ? bn2_->size : bn1_->size) + 1;
+	result->size = ((bn1_->size <= bn2_->size) ? bn2_->size : bn1_->size) + 1;
+	result->is_negative = bn1_->is_negative;
 
-	res->number = (digits*)calloc(res->size, sizeof(digits));
-	if (!res->number)
+	result->number = (digits*)calloc(result->size, sizeof(digits));
+	if (!result->number)
 	{
-		free(res);
+		free(result);
 		return NULL;
 	}
 	
-	BigNumber* greater_bn = (bn1_->size >= bn2_->size) ? bn1_ : bn2_;
-	BigNumber* least_bn = (bn1_->size <= bn2_->size) ? bn1_ : bn2_;
+	BigNumber* greater_bn;
+	BigNumber* least_bn;
+
+	if (bn1_->size == bn2_->size)
+	{
+		greater_bn = bn1_;
+		least_bn = bn2_;
+	}
+	else
+	{
+		greater_bn = (bn1_->size >= bn2_->size) ? bn1_ : bn2_;
+		least_bn = (bn1_->size <= bn2_->size) ? bn1_ : bn2_;
+	}
 
 	size_t difference = greater_bn->size - least_bn->size;
 
-	res->is_negative = bn1_->is_negative;
-
 	size_t remainder = 0;
+	digits dig_sum = 0;
 
-	for (int i = greater_bn->size; i >= 0; i--)
+	for (int i = least_bn->size - 1; i >= 0; i--)
 	{
-		digits dig_sum = greater_bn->number[i] + least_bn->number[i - difference] + remainder;
+		dig_sum = greater_bn->number[i + difference] + least_bn->number[i] + remainder;
 
 		remainder = dig_sum / 10;
 
-		res->number[i] = dig_sum % 10;
+		result->number[i + difference + 1] = dig_sum % 10;
 	}
 
-	return res;
+		size_t j = difference;
+		for (int i = difference; i > 0; i--)
+		{
+			dig_sum = greater_bn->number[j - 1] + remainder;
+			result->number[i] = dig_sum % 10;
+			remainder = dig_sum / 10;
+			--j;
+		}
+
+	return result;
+}
+
+BigNumber* BN_Mult(BigNumber* bn1_, BigNumber* bn2_)
+{
+	if (!bn1_ || !bn2_)
+		return NULL;
+
+	BigNumber* result = (BigNumber*)malloc(sizeof(BigNumber));
+	if (!result)
+		return NULL;
+
+	if (bn1_->number[0] == '0' || bn2_->number[0] == '0')
+	{
+		result->number = (digits*)calloc(1, sizeof(digits));
+		if (!result->number)
+		{
+			free(result);
+			return NULL;
+		}
+
+		result->number[0] = '0';
+		result->size = 1;
+		result->is_negative = false;
+
+		return result;
+	}
+
+
+
+	return result;
 }

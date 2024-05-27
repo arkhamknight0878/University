@@ -4,8 +4,8 @@
 
 int main()
 {
-	BigNumber* bn1 = BN_Create("1234");
-	BigNumber* bn2 = BN_Create("1234");
+	BigNumber* bn1 = BN_Create("1846");
+	BigNumber* bn2 = BN_Create("874");
 
 	printf("Big Number 1: ");
 	BN_Print(bn1);

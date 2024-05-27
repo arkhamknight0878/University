@@ -44,3 +44,5 @@ BigNumber* BN_Dif(BigNumber* bn1_, BigNumber* bn2_);
  * @return : Sum of Two Big Numbers
  */
 BigNumber* BN_Sum(BigNumber* bn1_, BigNumber* bn2_);
+
+BigNumber* BN_Mult(BigNumber* bn1_, BigNumber* bn2_);
