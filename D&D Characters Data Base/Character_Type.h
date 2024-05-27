@@ -3,6 +3,10 @@
 #include <stdbool.h>
 #include <stdlib.h>
 
+typedef enum Race Race;
+
+typedef enum Klass Klass;
+
 typedef struct DataBase DataBase;
 
 typedef struct Abilities Abilities;
@@ -13,7 +17,7 @@ typedef struct Level_Info Level_Info;
 
 typedef struct Character Character;
 
-// ------------------------------ Interactive Menu Functions ------------------------------
+// -------------------------------- Interactive Menu Functions --------------------------------
 
 /**
  * @brief : Option Choosing In Interaction Menu
@@ -22,7 +26,7 @@ typedef struct Character Character;
  */
 size_t Option_Chooing(size_t max_opt_amount_);
 
-// ------------------------------ Search & Sort Functions ------------------------------
+// --------------------------------- Search & Sort Functions ----------------------------------
 
 void Merge(unsigned int* arr_, unsigned int left_, unsigned int midle_, unsigned int right_);
 
@@ -30,7 +34,7 @@ void Merge_Sort_Recursive(unsigned int* arr_, unsigned int left_, unsigned int r
 
 void Merge_Sort(unsigned int* arr_, unsigned int size_);
 
-// ------------------------------ Character Creation Functions ------------------------------
+// ------------------------------- Character Creation Functions -------------------------------
 
 /**
  * @brief : List of Races Output
@@ -112,7 +116,7 @@ void Abilities_Table_Print(Character* character_);
  */
 void Info_Print(Character* character_);
 
-// ------------------------------ Level Up Functions ------------------------------
+// ------------------------------------ Level Up Functions ------------------------------------
 
 /**
  * @brief : Prints List of Abilities
@@ -162,9 +166,9 @@ void Rename(Character* character_);
  * @brief : Removes Character
  * @param character_ : Character
  */
-void Character_Delete(Character* character_);
+void Character_Delete(DataBase* database_, size_t index_);
 
-// ------------------------------ Data Base Functions ------------------------------
+// ------------------------------------ Data Base Functions -----------------------------------
 
 /**
  * @brief : Creates Data Base
@@ -211,10 +215,43 @@ void Edit_Element(DataBase* database_);
  * @brief : Prints List of Characters & Main Info About Them from Data Base
  * @param database_ : Data Base
  */
-void List_Print(DataBase* database_);
+void Data_Base_List_Print(DataBase* database_);
+
+// --------------------------------- Keys Requaered Functions ---------------------------------
+
+void Keys_List_Print();
 
 /**
  * @brief : Sort Characters in Data Base by Race Value
  * @param database_ : Data Base
  */
 void Sort_By_Race(DataBase* database_);
+
+// ------------------------------------- Delete Functions -------------------------------------
+
+/**
+ * @brief : Deletes Characters By Race
+ * @param database_ : Database
+ * @param race_ : Key Race
+ */
+void Delete_By_Race(DataBase* database_, Race race_);
+
+/**
+ * @brief : Deletes Characters By Klass
+ * @param database_ : Database
+ * @param klass_ : Key Klass
+ */
+void Delete_By_Klass(DataBase* database_, Klass klass_);
+
+/**
+ * @brief : Deletes Characters By Level
+ * @param database_ : Database
+ * @param level_ : Key Level
+ */
+void Delete_By_Level(DataBase* database_, size_t level_);
+
+/**
+ * @brief : Deletes Characters By Key With 3 previous Functions (depends on what key)
+ * @param database_ : Database
+ */
+void Delete_By_Key(DataBase* database_);

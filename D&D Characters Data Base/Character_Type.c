@@ -5,20 +5,20 @@
 #include <stdio.h>
 
 // Races Values
-typedef enum Race
+enum Race
 {
 	elf = 1,
 	gnome,
 	human
-}Race;
+};
 
 // Klasses Values
-typedef enum Klass
+enum Klass
 {
 	paladin = 1,
 	barbarian,
 	rogue
-}Klass;
+};
 
 // Abities
 struct Abilities
@@ -45,12 +45,12 @@ struct Modifiers
 // Character Type
 struct Character
 {
-	char* name;		// Character Name
-	size_t hits;		// Character Hit Points
-	size_t hit_dice;	// Character Hit Dice
-	size_t lvl;		// Character Level
-	size_t race;		// Character Race
-	size_t klass;		// Character Klass
+	char* name;				// Character Name
+	size_t hits;			// Character Hit Points
+	size_t hit_dice;		// Character Hit Dice
+	size_t lvl;				// Character Level
+	size_t race;			// Character Race
+	size_t klass;			// Character Klass
 	Abilities* abilities;	// Character Abilities
 	Modifiers* modifiers;	// Character Abilities Modificators
 };
@@ -62,7 +62,7 @@ struct DataBase
 	size_t capasity;
 };
 
-// ------------------------------ Interactive Menu Functions ------------------------------
+// -------------------------------- Interactive Menu Functions --------------------------------
 
 size_t Option_Chooing(size_t max_opt_amount_)
 {
@@ -78,7 +78,7 @@ size_t Option_Chooing(size_t max_opt_amount_)
 	return option;
 }
 
-// ------------------------------ Search & Sort Functions ------------------------------
+// --------------------------------- Search & Sort Functions ----------------------------------
 
 void Merge(unsigned int* arr_, unsigned int left_, unsigned int midle_, unsigned int right_)
 {
@@ -157,7 +157,7 @@ void Merge_Sort(unsigned int* arr_, unsigned int size_)
 	Merge_Sort_Recursive(arr_, 0, size_ - 1);
 }
 
-// ------------------------------ Character Creation Functions ------------------------------
+// ------------------------------- Character Creation Functions -------------------------------
 
 void Race_List_Print()
 {
@@ -245,7 +245,7 @@ void Abilities_Adjust(Character* character_)
 the highest three dice on a piece of scratch paper. Do\
 this five more times, so that you have seven numbers\n\n\
 Step 2: Now take your six numbers and write each number\
-beside one of your characterâ€™s six abilities:\n");
+beside one of your character’s six abilities:\n");
 	printf("\n");
 
 	printf("1. Strength	- ");
@@ -531,7 +531,7 @@ void Info_Print(Character* character_)
 	Abilities_Table_Print(character_);
 }
 
-// ------------------------------ Level Up Functions ------------------------------
+// ------------------------------------ Level Up Functions ------------------------------------
 
 void Abilities_List_Print()
 {
@@ -662,7 +662,7 @@ The Fate of The World Or Even The Fundamental Order of The Multiverse Is In Your
 size_t All_Abilities_Count(Character* character_)
 {
 	if (!character_)
-		return;
+		return 0;
 
 	return character_->abilities->charisma + character_->abilities->constitution + character_->abilities->dexterety +
 		character_->abilities->inteligence + character_->abilities->strength + character_->abilities->wisdom;
@@ -797,18 +797,20 @@ void Rename(Character* character_)
 	}
 }
 
-void Character_Delete(Character*  character_)
+void Character_Delete(DataBase* database_, size_t index_)
 {
-	if (!character_)
+	if (!database_)
 		return;
 
-	free(character_->name);
-	free(character_->abilities);
-	free(character_->modifiers);
-	free(character_);
+	free(database_->character[index_]->name);
+	free(database_->character[index_]->abilities);
+	free(database_->character[index_]->modifiers);
+
+	database_->character[index_] = database_->character[database_->size - 1];
+	database_->size--;
 }
 
-// ------------------------------ Data Base Functions ------------------------------
+// ------------------------------------ Data Base Functions -----------------------------------
 
 void DataBase_Menu_Print()
 {
@@ -948,14 +950,12 @@ void Edit_Element(DataBase* database_)
 		Info_Print(database_->character[index - 1]);
 		break;
 	case 5:
-		Character_Delete(database_->character[index - 1]);
-		database_->character[index - 1] = database_->character[database_->size - 1];
-		database_->size--;
+		Character_Delete(database_, index - 1);
 		break;
 	}
 }
 
-void List_Print(DataBase* database_)
+void Data_Base_List_Print(DataBase* database_)
 {
 	if (!database_)
 		return;
@@ -978,6 +978,17 @@ void List_Print(DataBase* database_)
 	printf("-----------------------------------------\n");
 }
 
+// --------------------------------- Keys Requaered Functions ---------------------------------
+
+void Keys_List_Print()
+{
+	printf("1. By Race\n");
+	printf("2. By Klass\n");
+	printf("3. By Level\n");
+	printf("4. Cansel\n");
+	printf("> ");
+}
+
 void Sort_By_Race(DataBase* database_)
 {
 	if (!database_)
@@ -991,4 +1002,100 @@ void Sort_By_Race(DataBase* database_)
 	option = Option_Chooing(3);
 
 
+}
+
+// ------------------------------------- Delete Functions -------------------------------------
+
+void Delete_By_Race(DataBase* database_, Race race_)
+{
+	if (!database_)
+		return;
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->race == race_)
+			Character_Delete(database_, i);
+	}
+}
+
+void Delete_By_Klass(DataBase* database_, Klass klass_)
+{
+	if (!database_)
+		return;
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->klass == klass_)
+			Character_Delete(database_, i);
+	}
+}
+
+void Delete_By_Level(DataBase* database_, size_t level_)
+{
+	if (!database_)
+		return;
+
+	for (size_t i = 0; i < database_->size; i++)
+	{
+		if (database_->character[i]->lvl == level_)
+			Character_Delete(database_, i);
+	}
+}
+
+void Delete_By_Key(DataBase* database_)
+{
+	size_t option = 0;
+
+	printf("How Do You Want To Delete?\n");
+	Keys_List_Print();
+
+	option = Option_Chooing(3);
+
+	switch (option)
+	{
+	case 1:
+		printf("Representatives of What Race Do You Want to Delete?\n");
+		Race_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Delete_By_Race(database_, elf);
+			break;
+		case 2:
+			Delete_By_Race(database_, gnome);
+			break;
+		case 3:
+			Delete_By_Race(database_, human);
+			break;
+		}
+		break;
+	case 2:
+		printf("Representatives of What Klass Do You Want to Delete?\n");
+		Klass_List_Print();
+
+		option = Option_Chooing(3);
+
+		switch (option)
+		{
+		case 1:
+			Delete_By_Klass(database_, paladin);
+			break;
+		case 2:
+			Delete_By_Klass(database_, barbarian);
+			break;
+		case 3:
+			Delete_By_Klass(database_, rogue);
+			break;
+		}
+		break;
+	case 3:
+		printf("Representatives of What Level Do You Want to Delete?\n> ");
+		scanf_s("%Iu", &option);
+		
+		Delete_By_Level(database_, option);
+		break;
+	}
 }

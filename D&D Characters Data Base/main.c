@@ -9,10 +9,6 @@ int main()
 	size_t size = 0;
 	size_t capacity = 1;
 
-	/*Character* character = Character_Create();
-
-	Info_Print(character);*/
-
 	DataBase* database = DataBase_Create(5);
 
 	while (option != 7)
@@ -30,7 +26,11 @@ int main()
 			Edit_Element(database);
 			break;
 		case 3:
-			List_Print(database);
+			Data_Base_List_Print(database);
+			break;
+		case 6:
+			Delete_By_Key(database);
+			break;
 		case 7:
 			printf("Goodbye\n");
 			break;
