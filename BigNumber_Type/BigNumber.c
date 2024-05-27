@@ -116,7 +116,7 @@ BigNumber* BN_Dif(BigNumber* bn1_, BigNumber* bn2_)
 	{
 		if (Is_Equal(bn1_, bn2_))
 		{
-			BigNumber* temp = (BigNumber*)realloc(result, 1);
+			digits* temp = (digits*)realloc(result->number, 1);
 			if (!temp)
 			{
 				free(result->number);
@@ -125,8 +125,12 @@ BigNumber* BN_Dif(BigNumber* bn1_, BigNumber* bn2_)
 			}
 			else
 			{
-				result = temp;
-				result->number[0] = '0';
+				result->number = temp;
+
+				result->number[0] = 0;
+				result->size = 1;
+				result->is_negative = false;
+
 				return result;
 			}
 		}
@@ -272,7 +276,10 @@ BigNumber* BN_Mult(BigNumber* bn1_, BigNumber* bn2_)
 		return result;
 	}
 
-
+	if (bn1_->is_negative == bn2_->is_negative)
+		result->is_negative = false;
+	else
+		result->is_negative = true;
 
 	return result;
 }
