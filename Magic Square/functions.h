@@ -1,6 +1,6 @@
 #pragma once
 
-#include <stdbool.h>
+#include <iostream>
 
 /**
  * @brief : Prints Matrics
@@ -15,7 +15,7 @@ void Matrix_Print(int** matrix_, size_t size_);
  * @param size_ : Matrix Size; Can Be Anything
  * @return : Pointer On Matrix
  */
-int** Matrix_Create_F(const char* file_name_, size_t* size_);
+int Matrix_Create_F(const char* file_name_, int**& matrix_, size_t& size_);
 
 /**
  * @brief : Checks If Matrix Is Magic Square
@@ -23,4 +23,4 @@ int** Matrix_Create_F(const char* file_name_, size_t* size_);
  * @param size_ : Matrix Size
  * @return : true If Matrix Is Magic Square, false Otherwise
  */
-bool Is_Magic_Square(int** matrix_, int size_);
+bool Is_Magic_Square(int** matrix_, size_t size_);
