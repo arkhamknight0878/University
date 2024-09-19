@@ -6,37 +6,79 @@ using namespace std;
 
 int main()
 {
-	/*Employee* list = nullptr;
-	size_t index = 0;
-
-	int creation_output = Employee_Create_F("list.txt", list, index);
-
-	switch (creation_output)
-	{
-	case -1:
-		cout << "File Was Not Found" << endl;
-		break;
-	case -2:
-		cout << "Memmory Allocation Problem" << endl;
-		break;
-	case -3:
-		cout << "File Was Not Opened" << endl;
-		break;
-	case 0:
-		for (size_t i = 0; i < index; ++i)
-		{
-			printf("%2Iu. ", i);
-			list[i].Info_Out();
-		}
-		break;
-	}*/
-
 	DataBase* data_base = new DataBase[1];
-	int creation_output = data_base->Base_Create_F("list.txt");
+	size_t main_option = 0;
+	size_t options = 0;
+	int functions_output = 0;
 
-	data_base->Base_Output();
-	data_base->Element_Add();
-	data_base->Base_Output();
+	while (main_option != 4)
+	{
+		Main_Menu_Print();
+
+		main_option = Option_Choosing(4);
+		switch (main_option)
+		{
+		case 1:
+			functions_output = data_base->Base_Create_F("list.txt");
+			switch (functions_output)
+			{
+			case -1:
+				printf("\n!!! File Was Not Found !!!\n");
+				return -1;
+			case -2:
+				printf("\n!!! Memmory Allocation Problem !!!\n");
+				return -2;
+			case -3:
+				printf("\n!!! File Was Not Opened!!! \n");
+				return -3;
+			case -4:
+				printf("\n!!! Memmory Alocation Problem While Trying To Expand Data Base !!!\n");
+				return -4;
+			case 0:
+				printf("\nCreation Ended Successfully\n\n");
+				break;
+			}
+
+			system("pause");
+
+			break;
+		case 2:
+			data_base->Base_Output();
+			system("pause");
+			break;
+		case 3:
+			Edit_Menu_Print();
+
+			options = Option_Choosing(4);
+			switch (options)
+			{
+			case 1:
+				functions_output = data_base->Element_Add();
+				switch (functions_output)
+				{
+				case -4:
+					printf("\n!!! Memmory Alocation Problem While Trying To Expand Data Base !!!\n");
+					return -4;
+				case 0:
+					printf("\nElement Was Added Successfully\n\n");
+					break;
+				}
+				break;
+			case 2:
+				data_base->Element_Delete();
+				printf("\nElement Was Deleted Successfully\n\n");
+				break;
+			case 3:
+				data_base->Element_Change();
+				break;
+			}
+
+			if (options != 4)
+				system("pause");
+
+			break;
+		}
+	}
 
 	return 0;
 }

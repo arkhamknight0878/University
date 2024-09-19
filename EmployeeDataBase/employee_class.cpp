@@ -42,15 +42,15 @@ float Employee::Get_Salary()
 
 void Employee::Info_Out()
 {
-	printf("%-15s %15Iu %15s %15.2f\n", name, birth_year, start_date, salary);
+	printf(" %-16s | %10Iu | %18s | %16.2f |\n", name, birth_year, start_date, salary);
 }
 
 void Employee::Info_Input()
 {
 	char initials[5];
 
-	printf("Enter Employee Information:\nExample: Last Name Initials Birth Year Star Date Salary\n");
-	scanf("%s %s %Iu %s %f", name, initials, &birth_year, start_date, &salary);
+	printf("\nEnter Employee Information:\nExample: Last_Name Initials Birth_Year Start_Date Salary\n> ");
+	scanf_s("%s %s %Iu %s %f", name, 31, initials, 5, &birth_year, start_date, 11, &salary);
 
 	strcat(name, " ");
 	strcat(name, initials);

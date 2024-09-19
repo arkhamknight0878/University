@@ -6,17 +6,19 @@ class DataBase
 {
 private:
 	Employee* base;
-	size_t size;
+	size_t capasity;
 	size_t current_amount;
 
 	int Base_Expansion();
+
+	void Employees_to_Delete(const char* name_);
 public:
 	// Constructor
 	DataBase()
 	{
-		size = 100;
+		capasity = 100;
 		current_amount = 0;
-		base = new Employee[size];
+		base = new Employee[capasity];
 	}
 	// Destructor
 	~DataBase()
@@ -31,7 +33,13 @@ public:
 
 	int Element_Add();
 
-	int Element_Delete();
+	void Element_Delete();
 
 	int Element_Change();
 };
+
+void Main_Menu_Print();
+
+void Edit_Menu_Print();
+
+int Option_Choosing(size_t options_amount_);

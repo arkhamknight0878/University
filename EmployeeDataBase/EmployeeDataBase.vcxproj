@@ -134,7 +134,6 @@
   <ItemGroup>
     <ClInclude Include="database.h" />
     <ClInclude Include="employee_class.h" />
-    <ClInclude Include="FileName.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="list.txt" />

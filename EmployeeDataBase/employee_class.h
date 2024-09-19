@@ -46,7 +46,7 @@ public:
 
 	float Get_Salary();
 
-	// Info Input Output Functions
+	// Info Input/Output Functions
 	void Info_Out();
 
 	void Info_Input();
