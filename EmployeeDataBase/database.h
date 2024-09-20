@@ -11,7 +11,7 @@ private:
 
 	int Base_Expansion();
 
-	void Employees_to_Delete(const char* name_);
+	void Employees_to_Edit(const char* name_);
 public:
 	// Constructor
 	DataBase()
@@ -40,6 +40,8 @@ public:
 
 void Main_Menu_Print();
 
-void Edit_Menu_Print();
+void Edit_Base_Menu_Print();
+
+void Edit_Element_Menu_Print();
 
 int Option_Choosing(size_t options_amount_);

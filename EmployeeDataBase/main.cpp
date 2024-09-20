@@ -47,7 +47,7 @@ int main()
 			system("pause");
 			break;
 		case 3:
-			Edit_Menu_Print();
+			Edit_Base_Menu_Print();
 
 			options = Option_Choosing(4);
 			switch (options)
@@ -70,6 +70,7 @@ int main()
 				break;
 			case 3:
 				data_base->Element_Change();
+				printf("\nElement Was Changed Successfully\n\n");
 				break;
 			}
 

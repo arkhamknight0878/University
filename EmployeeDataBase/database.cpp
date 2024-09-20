@@ -2,19 +2,23 @@
 
 int DataBase::Base_Expansion()
 {
+	// Выделяем память
 	Employee* tmp = new Employee[capasity += 50];
 	if (!tmp)
 		return -1;
 
+	// Копируем элементы
 	for (size_t i = 0; i < current_amount; ++i)
 		tmp[i] = base[i];
 
+
+	// Переприсваиваем
 	base = tmp;
 
 	return 0;
 }
 
-void DataBase::Employees_to_Delete(const char* name_)
+void DataBase::Employees_to_Edit(const char* name_)
 {
 	printf("\nFounded Employees:\n\n");
 
@@ -118,7 +122,7 @@ void DataBase::Element_Delete()
 	strcat(name, " ");
 	strcat(name, initials);
 
-	Employees_to_Delete(name);
+	Employees_to_Edit(name);
 
 	printf("\nWhich One Do You Want to Delete? (Enter Index)\n> ");
 	scanf_s("%Iu", &index);
@@ -133,22 +137,71 @@ int DataBase::Element_Change()
 {
 	char name[31];
 	char initials[5];
+	size_t index = 0;
+	int option = 0;
 
-	printf("Enter The Name of Employee You Want To Delete:\n> ");
+	printf("\nEnter The Name of Employee You Want To Change:\n> ");
 	scanf_s("%s %s", name, 31, initials, 5);
 
 	strcat(name, " ");
 	strcat(name, initials);
 
-	for (size_t i = 0; i < capasity; ++i)
-	{
-		if (strcmp(name, base[i].Get_Name()) == 0)
-		{
-			// Menu Print
-			// Option Choosing
+	Employees_to_Edit(name);
 
-			// Changing Fields
-		}
+	printf("\nWhich One Do You Want to Change? (Enter Index)\n> ");
+	scanf_s("%Iu", &index);
+
+	--index;
+
+	Edit_Element_Menu_Print();
+	option = Option_Choosing(5);
+
+	switch (option)
+	{
+	case 1:
+	{
+		printf("\nEnter New Name:\n> ");
+		scanf_s("%s %s", name, 31, initials, 5);
+
+		strcat(name, " ");
+		strcat(name, initials);
+
+		base[index].Set_Name(name);
+
+		break;
+	}
+	case 2:
+	{
+		size_t new_birth_date = 0;
+
+		printf("Enter New Birth Date:\n> ");
+		scanf_s("%Iu", &new_birth_date);
+
+		base[index].Set_Birth_Year(new_birth_date);
+
+		break;
+	}
+	case 3:
+	{
+		char new_start_date[11];
+
+		printf("Enter New Start Date:\n> ");
+		scanf_s("%s", new_start_date, 11);
+
+		base[index].Set_Start_Date(new_start_date);
+
+		break;
+	}
+	case 4:
+	{
+		float new_salary = 0;
+
+		printf("Enter New Start Date:\n> ");
+		scanf_s("%f", &new_salary);
+
+		base[index].Set_Salary(new_salary);
+		break;
+	}
 	}
 
 	return 0;
@@ -165,13 +218,24 @@ void Main_Menu_Print()
 	printf("> ");
 }
 
-void Edit_Menu_Print()
+void Edit_Base_Menu_Print()
 {
 	printf("\nWhat Exactly Do You Want to Change?\n");
 	printf("1. Add New Element\n");
 	printf("2. Delete Element\n");
 	printf("3. Change Element\n");
 	printf("4. Cancel\n");
+	printf("> ");
+}
+
+void Edit_Element_Menu_Print()
+{
+	printf("\nWhat Do You Want to Change?\n");
+	printf("1. Name\n");
+	printf("2. Birth Date\n");
+	printf("3. Start Date\n");
+	printf("4. Salary\n");
+	printf("5. Cancel\n");
 	printf("> ");
 }
 
