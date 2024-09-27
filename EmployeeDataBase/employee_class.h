@@ -60,13 +60,13 @@ public:
 	}
 
 	// Fields Set Functions
-	void Set_Name(char* name_);
+	void Set_Name(const char* name_);
 
-	void Set_Birth_Year(size_t birth_year_);
+	void Set_Birth_Year(const size_t birth_year_);
 
-	void Set_Start_Date(char* start_date_);
+	void Set_Start_Date(const char* start_date_);
 
-	void Set_Salary(float salary_);
+	void Set_Salary(const float salary_);
 
 	// Fields Get Functions
 	char* Get_Name();

@@ -101,7 +101,7 @@ int DataBase::Element_Add()
 		expanton_output = Base_Expansion();
 
 		if (expanton_output == -1)
-			return -4;
+			return -3;
 	}
 
 	base[current_amount].Info_Input();
@@ -208,6 +208,20 @@ int DataBase::Element_Change()
 	return 0;
 }
 
+int DataBase::Copy_to_File(const char* filename_)
+{
+	if (!filename_)
+		return -1;
+
+	FILE* fp;
+	fopen_s(&fp, filename_, "w");
+	if (!fp)
+		return -2;
+
+	for (size_t i = 0; i < current_amount; ++i)
+		fprintf_s(fp, "%Iu. %s %Iu %s %f\n", i, base[i].Get_Name(), base[i].Get_Birth_Year(), base[i].Get_Start_Date(), base[i].Get_Salary());
+}
+
 void Main_Menu_Print()
 {
 	system("cls");
@@ -215,7 +229,8 @@ void Main_Menu_Print()
 	printf("1. Create Employee Data Base From File\n");
 	printf("2. Print Out Data Base\n");
 	printf("3. Edit Data Base\n");
-	printf("4. Exit\n");
+	printf("4. Copy Base to File\n");
+	printf("5. Exit\n");
 	printf("> ");
 }
 

@@ -36,6 +36,8 @@ public:
 	void Element_Delete();
 
 	int Element_Change();
+
+	int Copy_to_File(const char* filename_);
 };
 
 void Main_Menu_Print();

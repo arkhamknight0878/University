@@ -11,11 +11,11 @@ int main()
 	size_t options = 0;
 	int functions_output = 0;
 
-	while (main_option != 4)
+	while (main_option != 5)
 	{
 		Main_Menu_Print();
 
-		main_option = Option_Choosing(4);
+		main_option = Option_Choosing(5);
 		switch (main_option)
 		{
 		case 1:
@@ -58,7 +58,7 @@ int main()
 				{
 				case -4:
 					printf("\n!!! Memmory Alocation Problem While Trying To Expand Data Base !!!\n");
-					return -4;
+					return -3;
 				case 0:
 					printf("\nElement Was Added Successfully\n\n");
 					break;
@@ -78,6 +78,31 @@ int main()
 				system("pause");
 
 			break;
+		case 4:
+		{
+			char filename[50];
+
+			printf("\nEnter File Name:\n> ");
+			scanf_s("%s", filename, 50);
+
+			switch (functions_output)
+			{
+			case -1:
+				printf("\n!!! File Was Not Found !!!\n");
+				return -1;
+			case -2:
+				printf("\n!!! File Was Not Opened!!! \n");
+				return -2;
+			case 0:
+				functions_output = data_base->Copy_to_File(filename);
+				break;
+			}
+
+			printf("\nFile Was Copied Succsessfully\n");
+			system("pause");
+
+			break;
+		}
 		}
 	}
 

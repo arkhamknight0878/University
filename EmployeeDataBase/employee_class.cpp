@@ -1,21 +1,21 @@
 #include "employee_class.h"
 
-void Employee::Set_Name(char* name_)
+void Employee::Set_Name(const char* name_)
 {
 	strcpy(name, name_);
 }
 
-void Employee::Set_Birth_Year(size_t birth_year_)
+void Employee::Set_Birth_Year(const size_t birth_year_)
 {
 	birth_year = birth_year_;
 }
 
-void Employee::Set_Start_Date(char* start_date_)
+void Employee::Set_Start_Date(const char* start_date_)
 {
 	strcpy(start_date, start_date_);
 }
 
-void Employee::Set_Salary(float salary_)
+void Employee::Set_Salary(const float salary_)
 {
 	salary = salary_;
 }
