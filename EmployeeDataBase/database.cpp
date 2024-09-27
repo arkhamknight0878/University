@@ -115,6 +115,7 @@ void DataBase::Element_Delete()
 	char name[31];
 	char initials[5];
 	size_t index = 0;
+	size_t n1 = 0;
 
 	printf("\nEnter The Name of Employee You Want To Delete:\n> ");
 	scanf_s("%s %s", name, 31, initials, 5);
@@ -127,7 +128,7 @@ void DataBase::Element_Delete()
 	printf("\nWhich One Do You Want to Delete? (Enter Index)\n> ");
 	scanf_s("%Iu", &index);
 
-	for (size_t j = index - 1; j < current_amount; ++j)
+	for (size_t j = index - 1; j < current_amount - 1; ++j)
 		base[j] = base[j + 1];
 
 	--current_amount;

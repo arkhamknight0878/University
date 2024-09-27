@@ -21,11 +21,42 @@ public:
 		start_date[0] = '\0';
 		salary = 0.0;
 	}
+	Employee(Employee& src_)
+	{
+		name = new char[strlen(src_.name) + 1];
+		strcpy(name, src_.name);
+		birth_year = src_.birth_year;
+		salary = src_.salary;
+		strcpy(start_date, src_.start_date);
+	}
 	// Destructor
 	~Employee()
 	{
 		if (name != nullptr)
 			delete[] name;
+	}
+
+	const Employee& operator = (const Employee& other_)
+	{
+		if (&other_ == this)
+			return *this;
+
+		if (name)
+			delete[] name;
+
+		if (other_.name)
+		{
+			name = new char[strlen(other_.name) + 1];
+			strcpy(name, other_.name);
+		}
+		else
+			name = nullptr;
+
+		if (other_.start_date)
+			strcpy(start_date, other_.start_date);
+
+		birth_year = other_.birth_year;
+		salary = other_.salary;
 	}
 
 	// Fields Set Functions
