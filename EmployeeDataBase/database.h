@@ -12,11 +12,18 @@ private:
 	int Base_Expansion();
 
 	void Employees_to_Edit(const char* name_);
+	void Swap(Employee& emp1_, Employee& emp2_);
 public:
-	// Constructor
+	// Constructors
 	DataBase()
 	{
 		capasity = 100;
+		current_amount = 0;
+		base = new Employee[capasity];
+	}
+	DataBase(size_t capasity_)
+	{
+		capasity = capasity_;
 		current_amount = 0;
 		base = new Employee[capasity];
 	}
@@ -31,11 +38,11 @@ public:
 
 	void Base_Output();
 
-	int Element_Add();
+	int Element_Add(Employee& employee_);
 
-	void Element_Delete();
+	void Element_Delete(const char* name_);
 
-	int Element_Change();
+	int Element_Change(char* name_);
 
 	int Copy_to_File(const char* filename_);
 };

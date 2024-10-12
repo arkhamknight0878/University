@@ -1,0 +1,756 @@
+main.cpp
+
+#include "database.h"
+
+#include <iostream>
+
+using namespace std;
+
+int main()
+{
+	DataBase* data_base = new DataBase[1];
+	size_t main_option = 0;
+	size_t options = 0;
+	int functions_output = 0;
+
+	while (main_option != 5)
+	{
+		Main_Menu_Print();
+
+		main_option = Option_Choosing(5);
+		switch (main_option)
+		{
+		case 1:
+			functions_output = data_base->Base_Create_F("list.txt");
+			switch (functions_output)
+			{
+			case -1:
+				printf("\n!!! File Was Not Found !!!\n");
+				return -1;
+			case -2:
+				printf("\n!!! Memmory Allocation Problem !!!\n");
+				return -2;
+			case -3:
+				printf("\n!!! File Was Not Opened!!! \n");
+				return -3;
+			case -4:
+				printf("\n!!! Memmory Alocation Problem While Trying To Expand Data Base !!!\n");
+				return -4;
+			case 0:
+				printf("\nCreation Ended Successfully\n\n");
+				break;
+			}
+
+			system("pause");
+
+			break;
+		case 2:
+			data_base->Base_Output();
+			system("pause");
+			break;
+		case 3:
+			Edit_Base_Menu_Print();
+
+			options = Option_Choosing(4);
+			switch (options)
+			{
+			case 1:
+				functions_output = data_base->Element_Add();
+				switch (functions_output)
+				{
+				case -4:
+					printf("\n!!! Memmory Alocation Problem While Trying To Expand Data Base !!!\n");
+					return -3;
+				case 0:
+					printf("\nElement Was Added Successfully\n\n");
+					break;
+				}
+				break;
+			case 2:
+				data_base->Element_Delete();
+				printf("\nElement Was Deleted Successfully\n\n");
+				break;
+			case 3:
+				data_base->Element_Change();
+				printf("\nElement Was Changed Successfully\n\n");
+				break;
+			}
+
+			if (options != 4)
+				system("pause");
+
+			break;
+		case 4:
+		{
+			char filename[50];
+
+			printf("\nEnter File Name:\n> ");
+			scanf_s("%s", filename, 50);
+
+			functions_output = data_base->Copy_to_File(filename);
+
+			switch (functions_output)
+			{
+			case -1:
+				printf("\n!!! File Was Not Found !!!\n");
+				return -1;
+			case -2:
+				printf("\n!!! File Was Not Opened!!! \n");
+				return -2;
+			}
+
+			printf("\nFile Was Copied Succsessfully\n");
+			system("pause");
+
+			break;
+		}
+		}
+	}
+
+	return 0;
+}
+
+employee.h
+
+#pragma once
+#pragma warning (disable: 4996)
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+
+class Employee
+{
+private:
+	char* name;				// Employee Name
+	size_t birth_year;		// Employee Year of Birth
+	char start_date[11];	// Date of First Day on Job
+	float salary;			// Employee Salary
+public:
+	// Constructor
+	Employee()
+	{
+		name = new char[31];
+		birth_year = 0;
+		start_date[0] = '\0';
+		salary = 0.0;
+	}
+	Employee(Employee& src_)
+	{
+		name = new char[strlen(src_.name) + 1];
+		strcpy(name, src_.name);
+		birth_year = src_.birth_year;
+		salary = src_.salary;
+		strcpy(start_date, src_.start_date);
+	}
+	// Destructor
+	~Employee()
+	{
+		if (name != nullptr)
+			delete[] name;
+	}
+
+	const Employee& operator = (const Employee& other_)
+	{
+		if (&other_ == this)
+			return *this;
+
+		if (name)
+			delete[] name;
+
+		if (other_.name)
+		{
+			name = new char[strlen(other_.name) + 1];
+			strcpy(name, other_.name);
+		}
+		else
+			name = nullptr;
+
+		if (other_.start_date)
+			strcpy(start_date, other_.start_date);
+
+		birth_year = other_.birth_year;
+		salary = other_.salary;
+	}
+
+	// Fields Set Functions
+	void Set_Name(const char* name_);
+
+	void Set_Birth_Year(const size_t birth_year_);
+
+	void Set_Start_Date(const char* start_date_);
+
+	void Set_Salary(const float salary_);
+
+	// Fields Get Functions
+	char* Get_Name();
+
+	size_t Get_Birth_Year();
+
+	char* Get_Start_Date();
+
+	float Get_Salary();
+
+	// Info Input/Output Functions
+	void Info_Out();
+
+	void Info_Input();
+};
+
+int Employee_Create_F(const char* file_name_, Employee*& employee_, size_t& index_);
+
+int Get_Year(char* date_);
+
+float First_Request(Employee* employee_list_, size_t list_size_, char** filtered_list_, size_t& filtered_list_size_, size_t current_year_);
+
+employee.cpp
+
+#include "employee_class.h"
+
+void Employee::Set_Name(const char* name_)
+{
+	strcpy(name, name_);
+}
+
+void Employee::Set_Birth_Year(const size_t birth_year_)
+{
+	birth_year = birth_year_;
+}
+
+void Employee::Set_Start_Date(const char* start_date_)
+{
+	strcpy(start_date, start_date_);
+}
+
+void Employee::Set_Salary(const float salary_)
+{
+	salary = salary_;
+}
+
+char* Employee::Get_Name()
+{
+	return name;
+}
+
+size_t Employee::Get_Birth_Year()
+{
+	return birth_year;
+}
+
+char* Employee::Get_Start_Date()
+{
+	return start_date;
+}
+
+float Employee::Get_Salary()
+{
+	return salary;
+}
+
+void Employee::Info_Out()
+{
+	printf(" %-16s | %10Iu | %18s | %16.2f |\n", name, birth_year, start_date, salary);
+}
+
+void Employee::Info_Input()
+{
+	char initials[5];
+	initials[4] = '\0';
+
+	printf("\nEnter Employee Information:\nExample: Last_Name Initials Birth_Year Start_Date Salary\n> ");
+	scanf_s("%s %s %Iu %s %f", name, 31, initials, 5, &birth_year, start_date, 11, &salary);
+
+	strcat(name, " ");
+	strcat(name, initials);
+}
+
+int Employee_Create_F(const char* file_name_, Employee*& employee_, size_t& index_)
+{
+	if (!file_name_)
+		return -1;
+
+	employee_ = new Employee[100];
+	if (!employee_)
+		return -2;
+
+	FILE* fp;
+	fopen_s(&fp, file_name_, "r");
+	if (!fp)
+		return -3;
+
+	char name[31];
+	char initials[5];
+	initials[4] = '\0';
+	char start_date[11];
+	size_t date_birth;
+	float salary;
+
+	while (fscanf_s(fp, "%s %s %Iu %s %f", name, 31, initials, 5, &date_birth, start_date, 11, &salary) == 5)
+	{
+		strcat(name, " ");
+		strcat(name, initials);
+
+		employee_[index_].Set_Name(name);
+		employee_[index_].Set_Start_Date(start_date);
+		employee_[index_].Set_Birth_Year(date_birth);
+		employee_[index_].Set_Salary(salary);
+
+		++index_;
+	}
+
+	return 0;
+}
+
+int Get_Year(char* date_)
+{
+	if (!date_)
+		return -1;
+
+	int year = 1;
+
+	for (int i = 6; i < 10; ++i)
+		year = (year * 10) + (date_[i] - '\0' * 1000);
+
+	return year;
+}
+
+float First_Request(Employee* employee_list_, size_t list_size_, char** filtered_list_, size_t& filtered_list_size_, size_t current_year_)
+{
+	if (!employee_list_ || list_size_ == 0)
+		return -1;
+
+	float average_salary = 0;
+	size_t job_start_year = 0;
+	char date[11];
+
+	for (size_t i = 0; i < list_size_; ++i)
+	{
+		strcpy(date, employee_list_[i].Get_Start_Date());
+		job_start_year = Get_Year(date);
+
+		if (current_year_ - job_start_year > 25)
+		{
+			strcpy(filtered_list_[filtered_list_size_], employee_list_[i].Get_Name());
+			++filtered_list_size_;
+
+			average_salary += employee_list_[i].Get_Salary();
+		}
+	}
+
+	if (filtered_list_size_ != 0)
+		average_salary /= filtered_list_size_;
+
+	return average_salary;
+}
+
+database.h
+
+#pragma once
+
+#include "employee_class.h"
+
+class DataBase
+{
+private:
+	Employee* base;
+	size_t capasity;
+	size_t current_amount;
+
+	int Base_Expansion();
+
+	void Employees_to_Edit(const char* name_);
+	void Swap(Employee& emp1_, Employee& emp2_);
+public:
+	// Constructors
+	DataBase()
+	{
+		capasity = 100;
+		current_amount = 0;
+		base = new Employee[capasity];
+	}
+	DataBase(size_t capasity_)
+	{
+		capasity = capasity_;
+		current_amount = 0;
+		base = new Employee[capasity];
+	}
+	// Destructor
+	~DataBase()
+	{
+		delete[] base;
+	}
+
+	// Class Methods
+	int Base_Create_F(const char* file_name_);
+
+	void Base_Output();
+
+	int Element_Add();
+
+	void Element_Delete();
+
+	int Element_Change();
+
+	int Copy_to_File(const char* filename_);
+};
+
+void Main_Menu_Print();
+
+void Edit_Base_Menu_Print();
+
+void Edit_Element_Menu_Print();
+
+int Option_Choosing(size_t options_amount_);
+
+database.cpp
+
+#include "database.h"
+
+int DataBase::Base_Expansion()
+{
+	Employee* tmp = new Employee[capasity += 50];
+	if (!tmp)
+		return -1;
+
+	for (size_t i = 0; i < current_amount; ++i)
+		tmp[i] = base[i];
+
+	base = tmp;
+
+	return 0;
+}
+
+void DataBase::Employees_to_Edit(const char* name_)
+{
+	printf("\nFounded Employees:\n\n");
+
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+	printf("| In |       Name       | Birth Year |     Start Date     |      Salary      |\n");
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+
+	for (size_t i = 0; i < capasity; ++i)
+	{
+		if (strcmp(name_, base[i].Get_Name()) == 0)
+		{
+			printf("| %2Iu |", i + 1);
+			base[i].Info_Out();
+		}
+	}
+
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+}
+
+void DataBase::Swap(Employee& emp1_, Employee& emp2_)
+{
+	Employee tmp = emp1_;
+	emp1_ = emp2_;
+	emp2_ = tmp;
+}
+
+int DataBase::Base_Create_F(const char* file_name_)
+{
+	if (!file_name_)
+		return -1;
+
+	FILE* fp;
+	fopen_s(&fp, file_name_, "r");
+	if (!fp)
+		return -2;
+
+	char name[31];
+	char initials[5];
+	initials[4] = '\0';
+	char start_date[11];
+	size_t date_birth;
+	float salary;
+
+	while (fscanf_s(fp, "%s %s %Iu %s %f", name, 31, initials, 5, &date_birth, start_date, 11, &salary) == 5)
+	{
+		strcat(name, " ");
+		strcat(name, initials);
+
+		base[current_amount].Set_Name(name);
+		base[current_amount].Set_Start_Date(start_date);
+		base[current_amount].Set_Birth_Year(date_birth);
+		base[current_amount].Set_Salary(salary);
+
+		++current_amount;
+		if (current_amount == capasity)
+		{
+			int expanton_output = 0;
+			expanton_output = Base_Expansion();
+
+			if (expanton_output == -1)
+				return -4;
+		}
+	}
+	
+	return 0;
+}
+
+void DataBase::Base_Output()
+{
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+	printf("| No |       Name       | Birth Year |     Start Date     |      Salary      |\n");
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+
+	for (size_t i = 0; i < current_amount; ++i)
+	{
+		printf("| %2Iu |", i + 1);
+		base[i].Info_Out();
+	}
+
+	printf("+----+------------------+------------+--------------------+------------------+\n");
+}
+
+int DataBase::Element_Add()
+{
+	if (current_amount >= capasity)
+	{
+		int expanton_output = 0;
+		expanton_output = Base_Expansion();
+
+		if (expanton_output == -1)
+			return -3;
+	}
+
+	Employee new_employee;
+	size_t index = 0;
+
+	new_employee.Info_Input();
+
+	Employee* new_base = new Employee[capasity];
+	if (!new_base)
+		return -1;
+
+	for (size_t i = 0; i < current_amount; ++i)
+	{
+		if (strcmp(new_employee.Get_Name(), base[i].Get_Name()) > 0)
+		{
+			new_base[index++] = new_employee;
+
+			for (size_t j = i; j < current_amount; ++j)
+				new_base[index++] = base[j];
+
+			++current_amount;
+
+			base = new_base;
+
+			return 0;
+		}
+
+		new_base[index++] = base[i];
+	}
+}
+
+void DataBase::Element_Delete()
+{
+	char name[31];
+	char initials[5];
+	initials[4] = '\0';
+	size_t index = 0;
+	size_t n1 = 0;
+
+	printf("\nEnter The Name of Employee You Want To Delete:\n> ");
+	scanf_s("%s %s", name, 31, initials, 5);
+
+	strcat(name, " ");
+	strcat(name, initials);
+
+	Employees_to_Edit(name);
+
+	printf("\nWhich One Do You Want to Delete? (Enter Index)\n> ");
+	scanf_s("%Iu", &index);
+
+	for (size_t j = index - 1; j < current_amount - 1; ++j)
+		base[j] = base[j + 1];
+
+	--current_amount;
+}
+
+int DataBase::Element_Change()
+{
+	char name[31];
+	char initials[5];
+	initials[4] = '\0';
+	size_t index = 0;
+	int option = 0;
+
+	printf("\nEnter The Name of Employee You Want To Change:\n> ");
+	scanf_s("%s %s", name, 31, initials, 5);
+
+	strcat(name, " ");
+	strcat(name, initials);
+
+	Employees_to_Edit(name);
+
+	printf("\nWhich One Do You Want to Change? (Enter Index)\n> ");
+	scanf_s("%Iu", &index);
+
+	--index;
+
+	Edit_Element_Menu_Print();
+	option = Option_Choosing(5);
+
+	switch (option)
+	{
+	case 1:
+	{
+		printf("\nEnter New Name:\n> ");
+		scanf_s("%s %s", name, 31, initials, 5);
+
+		strcat(name, " ");
+		strcat(name, initials);
+
+		base[index].Set_Name(name);
+
+		break;
+	}
+	case 2:
+	{
+		size_t new_birth_date = 0;
+
+		printf("Enter New Birth Date:\n> ");
+		scanf_s("%Iu", &new_birth_date);
+
+		base[index].Set_Birth_Year(new_birth_date);
+
+		break;
+	}
+	case 3:
+	{
+		char new_start_date[11];
+
+		printf("Enter New Start Date:\n> ");
+		scanf_s("%s", new_start_date, 11);
+
+		base[index].Set_Start_Date(new_start_date);
+
+		break;
+	}
+	case 4:
+	{
+		float new_salary = 0;
+
+		printf("Enter New Start Date:\n> ");
+		scanf_s("%f", &new_salary);
+
+		base[index].Set_Salary(new_salary);
+		break;
+	}
+	}
+
+	return 0;
+}
+
+int DataBase::Copy_to_File(const char* filename_)
+{
+	if (!filename_)
+		return -1;
+
+	FILE* fp;
+	fopen_s(&fp, filename_, "w");
+	if (!fp)
+		return -2;
+
+	for (size_t i = 0; i < current_amount; ++i)
+		fprintf_s(fp, "%Iu. %s %Iu %s %f\n", i + 1, base[i].Get_Name(), base[i].Get_Birth_Year(), base[i].Get_Start_Date(), base[i].Get_Salary());
+}
+
+void Main_Menu_Print()
+{
+	system("cls");
+	printf("What Do You Want to Do?\n");
+	printf("1. Create Employee Data Base From File\n");
+	printf("2. Print Out Data Base\n");
+	printf("3. Edit Data Base\n");
+	printf("4. Copy Base to File\n");
+	printf("5. Exit\n");
+	printf("> ");
+}
+
+void Edit_Base_Menu_Print()
+{
+	printf("\nWhat Exactly Do You Want to Change?\n");
+	printf("1. Add New Element\n");
+	printf("2. Delete Element\n");
+	printf("3. Change Element\n");
+	printf("4. Cancel\n");
+	printf("> ");
+}
+
+void Edit_Element_Menu_Print()
+{
+	printf("\nWhat Do You Want to Change?\n");
+	printf("1. Name\n");
+	printf("2. Birth Date\n");
+	printf("3. Start Date\n");
+	printf("4. Salary\n");
+	printf("5. Cancel\n");
+	printf("> ");
+}
+
+int Option_Choosing(size_t options_amount_)
+{
+	int option = 0;
+
+	scanf_s("%d", &option);
+
+	while (option <= 0 || option > options_amount_)
+	{
+		printf("\n!!! Incprrect Input !!! Try Again...\n> ");
+		scanf_s("%d", &option);
+	}
+
+	return option;
+}
+
+list.txt
+
+Alekseev F.F. 1991 05.02.2022 77000
+Alekseev G.G. 1988 15.08.2020 49000
+Andreev G.G. 1988 05.11.2020 45000
+Borisov B.B. 1986 10.07.2020 50000
+Egorov K.K. 1989 05.03.2021 54000
+Fedorov E.E. 1987 05.07.2020 57000
+Fedorov E.E. 1990 05.08.2021 62000
+Grigoryev F.F. 1991 05.02.2022 76000
+Ivanov D.D. 1992 10.03.2022 70000
+Ivanov I.I. 1985 10.01.2020 50000
+Kozlov A.A. 1993 01.07.2022 80000
+Kozlov G.G. 1988 15.08.2020 48000
+Kuzmin A.A. 1993 01.07.2022 80000
+Kuzmin E.E. 1987 01.12.2020 57000
+Kuznetsov K.K. 1989 10.02.2021 52000
+Kuznetsov K.K. 1992 20.02.2022 70000
+Mihailov B.B. 1986 01.10.2020 52000
+Mihailov D.D. 1992 01.10.2022 72000
+Morozov B.B. 1986 10.04.2020 51000
+Morozov F.F. 1991 10.04.2022 77000
+Nikolaev V.V. 1990 01.05.2021 60000
+Novikov B.B. 1986 10.03.2020 51000
+Novikov D.D. 1992 10.05.2022 72000
+Pavlov A.A. 1993 15.09.2022 82000
+Petrov E.E. 1987 01.09.2020 55000
+Petrov P.P. 1990 05.05.2021 60000
+Popov B.B. 1986 01.05.2020 51000
+Popov V.V. 1991 10.11.2021 65000
+Romanov I.I. 1989 05.01.2021 53000
+Romanov V.V. 1990 05.10.2021 65000
+Sidorov F.F. 1991 05.06.2022 75000
+Sidorov S.S. 1988 15.09.2019 45000
+Smirnov A.A. 1993 05.08.2022 80000
+Smirnov D.D. 1987 01.07.2020 55000
+Sokolov M.M. 1989 05.04.2020 48000
+Sokolov V.V. 1990 01.11.2021 65000
+Solovyev E.E. 1987 01.06.2020 57000
+Solovyev V.V. 1990 05.10.2021 68000
+Stepanov E.E. 1987 01.06.2020 56000
+Vasiliev A.A. 1993 15.06.2022 75000
+Vasiliev G.G. 1988 15.03.2020 48000
+Volkov D.D. 1992 20.03.2022 72000
+Volkov K.K. 1989 10.01.2021 53000
+Yakovlev D.D. 1992 10.05.2022 73000
+Yakovlev K.K. 1989 05.03.2021 53000
+Zaytsev F.F. 1991 05.04.2022 77000
+Zaytsev G.G. 1988 10.05.2020 47000

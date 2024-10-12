@@ -53,7 +53,11 @@ int main()
 			switch (options)
 			{
 			case 1:
-				functions_output = data_base->Element_Add();
+			{
+				Employee employee;
+				employee.Info_Input();
+
+				functions_output = data_base->Element_Add(employee);
 				switch (functions_output)
 				{
 				case -4:
@@ -64,14 +68,39 @@ int main()
 					break;
 				}
 				break;
+			}
 			case 2:
-				data_base->Element_Delete();
+			{
+				char name[31];
+				char initials[5];
+				initials[4] = '\0';
+
+				printf("\nEnter The Name of Employee You Want To Delete:\n> ");
+				scanf_s("%s %s", name, 31, initials, 5);
+
+				strcat(name, " ");
+				strcat(name, initials);
+
+				data_base->Element_Delete(name);
 				printf("\nElement Was Deleted Successfully\n\n");
 				break;
+			}
 			case 3:
-				data_base->Element_Change();
+			{
+				char name[31];
+				char initials[5];
+				initials[4] = '\0';
+
+				printf("\nEnter The Name of Employee You Want To Delete:\n> ");
+				scanf_s("%s %s", name, 31, initials, 5);
+
+				strcat(name, " ");
+				strcat(name, initials);
+
+				data_base->Element_Change(name);
 				printf("\nElement Was Changed Successfully\n\n");
 				break;
+			}
 			}
 
 			if (options != 4)

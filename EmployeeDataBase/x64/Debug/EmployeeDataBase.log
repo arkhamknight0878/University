@@ -1,0 +1,4 @@
+﻿  database.cpp
+C:\Users\domartynov\Downloads\EmployeeDataBase\database.cpp(235): warning C4715: DataBase::Copy_to_File: значение возвращается не при всех путях выполнения
+C:\Users\domartynov\Downloads\EmployeeDataBase\employee_class.h(60): warning C4715: Employee::operator=: значение возвращается не при всех путях выполнения
+  EmployeeDataBase.vcxproj -> C:\Users\domartynov\Downloads\EmployeeDataBase\x64\Debug\EmployeeDataBase.exe

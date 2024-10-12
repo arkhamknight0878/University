@@ -36,7 +36,7 @@ public:
 			delete[] name;
 	}
 
-	const Employee& operator = (const Employee& other_)
+	Employee& operator = (const Employee& other_)
 	{
 		if (&other_ == this)
 			return *this;

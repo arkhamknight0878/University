@@ -2,17 +2,13 @@
 
 int DataBase::Base_Expansion()
 {
-	// Выделяем память
 	Employee* tmp = new Employee[capasity += 50];
 	if (!tmp)
 		return -1;
 
-	// Копируем элементы
 	for (size_t i = 0; i < current_amount; ++i)
 		tmp[i] = base[i];
 
-
-	// Переприсваиваем
 	base = tmp;
 
 	return 0;
@@ -38,6 +34,13 @@ void DataBase::Employees_to_Edit(const char* name_)
 	printf("+----+------------------+------------+--------------------+------------------+\n");
 }
 
+void DataBase::Swap(Employee& emp1_, Employee& emp2_)
+{
+	Employee tmp = emp1_;
+	emp1_ = emp2_;
+	emp2_ = tmp;
+}
+
 int DataBase::Base_Create_F(const char* file_name_)
 {
 	if (!file_name_)
@@ -50,6 +53,7 @@ int DataBase::Base_Create_F(const char* file_name_)
 
 	char name[31];
 	char initials[5];
+	initials[4] = '\0';
 	char start_date[11];
 	size_t date_birth;
 	float salary;
@@ -65,7 +69,7 @@ int DataBase::Base_Create_F(const char* file_name_)
 		base[current_amount].Set_Salary(salary);
 
 		++current_amount;
-		if (current_amount >= capasity)
+		if (current_amount == capasity)
 		{
 			int expanton_output = 0;
 			expanton_output = Base_Expansion();
@@ -74,7 +78,7 @@ int DataBase::Base_Create_F(const char* file_name_)
 				return -4;
 		}
 	}
-	
+
 	return 0;
 }
 
@@ -93,7 +97,7 @@ void DataBase::Base_Output()
 	printf("+----+------------------+------------+--------------------+------------------+\n");
 }
 
-int DataBase::Element_Add()
+int DataBase::Element_Add(Employee& employee_)
 {
 	if (current_amount >= capasity)
 	{
@@ -104,26 +108,40 @@ int DataBase::Element_Add()
 			return -3;
 	}
 
-	base[current_amount].Info_Input();
-	current_amount += 1;
+	size_t index = 0;
+
+	Employee* new_base = new Employee[capasity];
+	if (!new_base)
+		return -1;
+
+	++current_amount;
+
+	for (size_t i = 0; i < current_amount; ++i)
+	{
+		if (strcmp(base[i].Get_Name(), employee_.Get_Name()) > 0)
+		{
+			new_base[index++] = employee_;
+
+			for (size_t j = i; j < current_amount ; ++j)
+				new_base[index++] = base[j];
+
+			base = new_base;
+
+			return 0;
+		}
+
+		new_base[index++] = base[i];
+	}
 
 	return 0;
 }
 
-void DataBase::Element_Delete()
+void DataBase::Element_Delete(const char* name_)
 {
-	char name[31];
-	char initials[5];
 	size_t index = 0;
 	size_t n1 = 0;
 
-	printf("\nEnter The Name of Employee You Want To Delete:\n> ");
-	scanf_s("%s %s", name, 31, initials, 5);
-
-	strcat(name, " ");
-	strcat(name, initials);
-
-	Employees_to_Edit(name);
+	Employees_to_Edit(name_);
 
 	printf("\nWhich One Do You Want to Delete? (Enter Index)\n> ");
 	scanf_s("%Iu", &index);
@@ -134,20 +152,14 @@ void DataBase::Element_Delete()
 	--current_amount;
 }
 
-int DataBase::Element_Change()
+int DataBase::Element_Change(char* name_)
 {
-	char name[31];
-	char initials[5];
 	size_t index = 0;
 	int option = 0;
+	char initials[5];
+	initials[4] = '\0';
 
-	printf("\nEnter The Name of Employee You Want To Change:\n> ");
-	scanf_s("%s %s", name, 31, initials, 5);
-
-	strcat(name, " ");
-	strcat(name, initials);
-
-	Employees_to_Edit(name);
+	Employees_to_Edit(name_);
 
 	printf("\nWhich One Do You Want to Change? (Enter Index)\n> ");
 	scanf_s("%Iu", &index);
@@ -162,12 +174,12 @@ int DataBase::Element_Change()
 	case 1:
 	{
 		printf("\nEnter New Name:\n> ");
-		scanf_s("%s %s", name, 31, initials, 5);
+		scanf_s("%s %s", name_, 31, initials, 5);
 
-		strcat(name, " ");
-		strcat(name, initials);
+		strcat(name_, " ");
+		strcat(name_, initials);
 
-		base[index].Set_Name(name);
+		base[index].Set_Name(name_);
 
 		break;
 	}
@@ -219,7 +231,7 @@ int DataBase::Copy_to_File(const char* filename_)
 		return -2;
 
 	for (size_t i = 0; i < current_amount; ++i)
-		fprintf_s(fp, "%Iu. %s %Iu %s %f\n", i, base[i].Get_Name(), base[i].Get_Birth_Year(), base[i].Get_Start_Date(), base[i].Get_Salary());
+		fprintf_s(fp, "%Iu. %s %Iu %s %f\n", i + 1, base[i].Get_Name(), base[i].Get_Birth_Year(), base[i].Get_Start_Date(), base[i].Get_Salary());
 }
 
 void Main_Menu_Print()
