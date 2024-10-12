@@ -63,6 +63,10 @@ public:
 class Triangle
 {
 private:
+	static size_t triangle_counter;
+	
+	char name[13];
+
 	Vertex vertex1;
 	Vertex vertex2;
 	Vertex vertex3;
@@ -76,34 +80,32 @@ private:
 		return sqrt(pow((vertex1_.Get_X() - vertex2_.Get_X()), 2) + pow((vertex1_.Get_Y() - vertex2_.Get_Y()), 2));
 	}
 public:
-	Triangle()
-	{
-		vertex1 = Vertex(0, 0);
-		vertex2 = Vertex(0, 0);
-		vertex3 = Vertex(0, 0);
+	Triangle();
 
-		edge1 = 0;
-		edge2 = 0;
-		edge3 = 0;
-	}
-	Triangle(Vertex vertex1_, Vertex vertex2_, Vertex vertex3_)
-	{
-		vertex1 = vertex1_;
-		vertex2 = vertex2_;
-		vertex3 = vertex3_;
+	Triangle(Vertex vertex1_, Vertex vertex2_, Vertex vertex3_);
 
-		edge1 = Pythagor(vertex1, vertex2);
-		edge2 = Pythagor(vertex2, vertex3);
-		edge3 = Pythagor(vertex3, vertex1);
-	}
-	double Area(double edge1_, double edge2_, double edge3_)
-	{
-		double semiperim = (edge1_ + edge2_ + edge3_) / 2;
+	Triangle& operator= (const Triangle& other_);
 
-		return sqrt(semiperim * (semiperim - edge1) * (semiperim - edge2) * (semiperim - edge3));
-	}
-	void Move_Triangle()
-	{
+	bool operator> (Triangle& other_){	return (Area() > other_.Area());	}
 
-	}
+	bool operator< (Triangle& other_){	return (Area() < other_.Area());	}
+
+	bool operator!= (Triangle& other_){	return (Area() != other_.Area());	}
+
+	bool operator== (Triangle& other_){ return (Area() == other_.Area());	}
+
+	/*bool IsInTriangle(Triangle other_)
+	{
+		double a = 
+	}*/
+
+	double Area();
+
+	void Move_Triangle(Vertex coords_);
 };
+
+//Реализация - считаются произведения(1, 2, 3 - вершины треугольника, 0 - точка) :
+//(x1 - x0) * (y2 - y1) - (x2 - x1) * (y1 - y0)
+//(x2 - x0) * (y3 - y2) - (x3 - x2) * (y2 - y0)
+//(x3 - x0) * (y1 - y3) - (x1 - x3) * (y3 - y0)
+//Если они одинакового знака, то точка внутри треугольника, если что - то из этого - ноль, то точка лежит на стороне, иначе точка вне треугольника.
