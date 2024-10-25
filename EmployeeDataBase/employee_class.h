@@ -36,28 +36,7 @@ public:
 			delete[] name;
 	}
 
-	Employee& operator = (const Employee& other_)
-	{
-		if (&other_ == this)
-			return *this;
-
-		if (name)
-			delete[] name;
-
-		if (other_.name)
-		{
-			name = new char[strlen(other_.name) + 1];
-			strcpy(name, other_.name);
-		}
-		else
-			name = nullptr;
-
-		if (other_.start_date)
-			strcpy(start_date, other_.start_date);
-
-		birth_year = other_.birth_year;
-		salary = other_.salary;
-	}
+	Employee& operator = (const Employee& other_);
 
 	// Fields Set Functions
 	void Set_Name(const char* name_);
@@ -81,6 +60,8 @@ public:
 	void Info_Out();
 
 	void Info_Input();
+
+	bool Siv(const char* str_) { return (!strcmp(name, str_)); }
 };
 
 int Employee_Create_F(const char* file_name_, Employee*& employee_, size_t& index_);

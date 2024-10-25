@@ -1,5 +1,29 @@
 #include "employee_class.h"
 
+Employee& Employee::operator=(const Employee& other_)
+{
+	if (&other_ == this)
+		return *this;
+
+	if (name)
+		delete[] name;
+
+
+	if (other_.name)
+	{
+		name = new char[strlen(other_.name) + 1];
+		strcpy(name, other_.name);
+	}
+	else
+		name = nullptr;
+
+	if (other_.start_date)
+		strcpy(start_date, other_.start_date);
+
+	birth_year = other_.birth_year;
+	salary = other_.salary;
+}
+
 void Employee::Set_Name(const char* name_)
 {
 	strcpy(name, name_);
@@ -48,6 +72,7 @@ void Employee::Info_Out()
 void Employee::Info_Input()
 {
 	char initials[5];
+	initials[4] = '\0';
 
 	printf("\nEnter Employee Information:\nExample: Last_Name Initials Birth_Year Start_Date Salary\n> ");
 	scanf_s("%s %s %Iu %s %f", name, 31, initials, 5, &birth_year, start_date, 11, &salary);
@@ -72,6 +97,7 @@ int Employee_Create_F(const char* file_name_, Employee*& employee_, size_t& inde
 
 	char name[31];
 	char initials[5];
+	initials[4] = '\0';
 	char start_date[11];
 	size_t date_birth;
 	float salary;

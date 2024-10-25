@@ -114,8 +114,6 @@ int DataBase::Element_Add(Employee& employee_)
 	if (!new_base)
 		return -1;
 
-	++current_amount;
-
 	for (size_t i = 0; i < current_amount; ++i)
 	{
 		if (strcmp(base[i].Get_Name(), employee_.Get_Name()) > 0)
@@ -124,6 +122,8 @@ int DataBase::Element_Add(Employee& employee_)
 
 			for (size_t j = i; j < current_amount ; ++j)
 				new_base[index++] = base[j];
+
+			++current_amount;
 
 			base = new_base;
 
