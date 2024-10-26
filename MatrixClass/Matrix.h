@@ -43,9 +43,9 @@ public:
 
 	Matrix& operator-= (const Matrix& other_);
 
-	// TODO: Matrix& operator/ (const Matrix& other_);
+	// TODO: Matrix& operator/= (const Matrix& other_);
 
-	// TODO: Matrix& operator/ (int data_);
+	Matrix& operator/= (int data_);
 
 	Matrix& operator*= (const Matrix& other_);
 
@@ -54,5 +54,6 @@ public:
 	bool operator==(const Matrix& other_);
 
 	bool operator!=(const Matrix& other_);
-};
 
+	Matrix Transpon();
+};

@@ -196,6 +196,17 @@ Matrix& Matrix::operator-=(const Matrix& other_)
 	return *this;
 }
 
+Matrix& Matrix::operator/=(int data_)
+{
+	for (size_t i = 0; i < rows; ++i)
+	{
+		for (size_t j = 0; j < columns; ++j)
+			matrix[i][j] /= data_;
+	}
+
+	return *this;
+}
+
 Matrix& Matrix::operator*=(const Matrix& other_)
 {
 	if (rows != other_.columns || columns != other_.rows)
@@ -269,4 +280,17 @@ bool Matrix::operator!=(const Matrix& other_)
 	}
 
 	return false;
+}
+
+Matrix Matrix::Transpon()
+{
+	Matrix result(columns, rows);
+
+	for (size_t i = 0; i < result.rows; ++i)
+	{
+		for (size_t j = 0; j < result.columns; ++j)
+			result.matrix[i][j] = matrix[j][i];
+	}
+
+	return result;
 }

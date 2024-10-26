@@ -13,11 +13,11 @@ int main()
 	matrix_b.SetRandMatrix();
 	matrix_b.MatrixPrint();
 
-	//Matrix mult = matrix_a * matrix_b;
-	//mult.MatrixPrint();
+	/*matrix_a *= matrix_b;
+	matrix_a.MatrixPrint();*/
 
-	matrix_a *= matrix_b;
-	matrix_a.MatrixPrint();
+	Matrix transpon = matrix_a.Transpon();
+	transpon.MatrixPrint();
 
 	return 0;
 }
