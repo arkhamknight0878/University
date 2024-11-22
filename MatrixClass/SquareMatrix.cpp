@@ -1,60 +1,78 @@
-#include "Matrix.h"
+#include "SquareMatrix.h"
+#include <math.h>
 
-void Matrix::Memmory(int rows_, int columns_)
+SquareMatrix* SquareMatrix::Minor(size_t del_row_, size_t del_column_)
 {
-	matrix = new double* [rows_];
-
-	for (size_t i = 0; i < rows_; ++i)
-		matrix[i] = new double[columns_];
-}
-
-Matrix::Matrix(int rows_, int columns_)
-{
-	if (rows_ <= 0 || columns_ <= 0)
-		throw 1;
-
-	rows = rows_;
-	columns = columns_;
-
-	Memmory(rows, columns);
+	size_t minor_row = 0;
+	SquareMatrix* minor = new SquareMatrix(rows - 1);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
-			matrix[i][j] = 0;
+		if (i == del_row_) continue;
+
+		size_t newCol = 0;
+
+		if (i != del_row_)
+		{
+			for (size_t j = 0, minor_columns = 0; j < rows; ++j)
+			{
+				if (j != del_column_) 
+					minor->matrix[minor_row][minor_columns++] = matrix[i][j];
+			}
+			++minor_row;
+		}
 	}
+
+	return minor;
 }
 
-Matrix::Matrix(const Matrix& other_)
+SquareMatrix::SquareMatrix(const SquareMatrix& other_)
 {
-	rows = other_.rows;
-	columns = other_.columns;
+	if (!other_.matrix)
+	{
+		matrix = nullptr;
+		return;
+	}
+
+	rows = columns = other_.rows;
 
 	Memmory(rows, columns);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (size_t j = 0; j < rows; ++j)
 			matrix[i][j] = other_.matrix[i][j];
 	}
 }
 
-Matrix::~Matrix()
+SquareMatrix& SquareMatrix::operator=(const SquareMatrix& other_)
 {
+	if (this == &other_)
+		return *this;
+
 	for (size_t i = 0; i < rows; ++i)
-	{
-		delete[] matrix[i];
-	}
+		delete matrix[i];
 
 	delete[] matrix;
+
+	Memmory(other_.rows, other_.rows);
+	rows = columns = other_.rows;
+
+	for (size_t i = 0; i < rows; ++i)
+	{
+		for (size_t j = 0; j < rows; ++j)
+			matrix[i][j] = other_.matrix[i][j];
+	}
+
+	return *this;
 }
 
-Matrix Matrix::operator+(const Matrix& other_) const
+SquareMatrix SquareMatrix::operator+(const SquareMatrix& other_) const
 {
 	if (rows != other_.rows || columns != other_.columns)
 		throw 2;
 
-	Matrix result(rows, columns);
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -65,12 +83,12 @@ Matrix Matrix::operator+(const Matrix& other_) const
 	return result;
 }
 
-Matrix Matrix::operator-(const Matrix& other_) const
+SquareMatrix SquareMatrix::operator-(const SquareMatrix& other_) const
 {
 	if (rows != other_.rows || columns != other_.columns)
 		throw 2;
 
-	Matrix result(rows, columns);
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -81,12 +99,12 @@ Matrix Matrix::operator-(const Matrix& other_) const
 	return result;
 }
 
-Matrix Matrix::operator*(const Matrix& other_) const
+SquareMatrix SquareMatrix::operator*(const SquareMatrix& other_) const
 {
 	if (rows != other_.columns || columns != other_.rows)
 		throw 2;
 
-	Matrix result(rows, other_.columns);
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -104,9 +122,9 @@ Matrix Matrix::operator*(const Matrix& other_) const
 	return result;
 }
 
-Matrix Matrix::operator*(int data_) const
+SquareMatrix SquareMatrix::operator*(int data_) const
 {
-	Matrix result(rows, columns);
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -117,9 +135,14 @@ Matrix Matrix::operator*(int data_) const
 	return result;
 }
 
-Matrix Matrix::operator/(int data_) const
+SquareMatrix SquareMatrix::operator/(SquareMatrix& other_) const
 {
-	Matrix result(rows, columns);
+	return (*this * other_.Reverse());
+}
+
+SquareMatrix SquareMatrix::operator/(int data_) const
+{
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -130,7 +153,7 @@ Matrix Matrix::operator/(int data_) const
 	return result;
 }
 
-Matrix& Matrix::operator+=(const Matrix& other_)
+SquareMatrix& SquareMatrix::operator+=(const SquareMatrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
 		throw 2;
@@ -144,7 +167,7 @@ Matrix& Matrix::operator+=(const Matrix& other_)
 	return *this;
 }
 
-Matrix& Matrix::operator-=(const Matrix& other_)
+SquareMatrix& SquareMatrix::operator-=(const SquareMatrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
 		throw 2;
@@ -158,7 +181,12 @@ Matrix& Matrix::operator-=(const Matrix& other_)
 	return *this;
 }
 
-Matrix& Matrix::operator/=(int data_)
+SquareMatrix& SquareMatrix::operator/=(SquareMatrix& other_)
+{
+	return (*this *= other_.Reverse());
+}
+
+SquareMatrix& SquareMatrix::operator/=(int data_)
 {
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -169,12 +197,12 @@ Matrix& Matrix::operator/=(int data_)
 	return *this;
 }
 
-Matrix& Matrix::operator*=(const Matrix& other_)
+SquareMatrix& SquareMatrix::operator*=(const SquareMatrix& other_)
 {
 	if (rows != other_.columns || columns != other_.rows)
 		throw 2;
 
-	Matrix temp = *this;
+	SquareMatrix temp = *this;
 	columns = other_.columns;
 
 	for (size_t i = 0; i < rows; ++i)
@@ -199,7 +227,7 @@ Matrix& Matrix::operator*=(const Matrix& other_)
 	return *this;
 }
 
-Matrix& Matrix::operator*=(int data_)
+SquareMatrix& SquareMatrix::operator*=(int data_)
 {
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -210,10 +238,10 @@ Matrix& Matrix::operator*=(int data_)
 	return *this;
 }
 
-bool Matrix::operator==(const Matrix& other_)
+bool SquareMatrix::operator==(const SquareMatrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		return false;
 
 	for (size_t i = 0; i < rows; ++i)
 	{
@@ -227,26 +255,37 @@ bool Matrix::operator==(const Matrix& other_)
 	return true;
 }
 
-bool Matrix::operator!=(const Matrix& other_)
+bool SquareMatrix::operator!=(const SquareMatrix& other_)
 {
-	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+	return !(&other_ == this);
+}
 
-	for (size_t i = 0; i < rows; ++i)
+double SquareMatrix::Determinant()
+{
+	double determinant = 0;
+
+	if (rows == 1)
+		return matrix[0][0];
+	else if (rows == 2)
+		return (matrix[0][0] * matrix[1][1] - matrix[1][0] * matrix[0][1]);
+	else
 	{
-		for (size_t j = 0; j < columns; ++j)
+		double sign = 1;
+		for (size_t i = 0; i < rows; ++i)
 		{
-			if (matrix[i][j] != other_.matrix[i][j])
-				return true;
+			SquareMatrix* minor = Minor(0, i);
+
+			determinant += pow(-1, i) * matrix[0][i] * minor->Determinant();
+			sign *= -1;
 		}
 	}
 
-	return false;
+	return determinant;
 }
 
-Matrix Matrix::Transpon()
+SquareMatrix SquareMatrix::Transpon()
 {
-	Matrix result(columns, rows);
+	SquareMatrix result(rows);
 
 	for (size_t i = 0; i < result.rows; ++i)
 	{
@@ -257,7 +296,28 @@ Matrix Matrix::Transpon()
 	return result;
 }
 
-istream& operator>>(istream& in_, Matrix& matrix_)
+SquareMatrix SquareMatrix::Reverse()
+{
+	double determinant = Determinant();
+	SquareMatrix result(rows);
+	SquareMatrix transpon = Transpon();
+
+	if (determinant)
+	{
+		for (size_t i = 0; i < rows; ++i)
+		{
+			for (size_t j = 0; j < rows; ++j)
+			{
+				SquareMatrix* minor = transpon.Minor(i, j);
+				result.matrix[i][j] = pow(-1, i + j) * minor->Determinant() / determinant;
+			}
+		}
+	}
+
+	return result;
+}
+
+istream& operator>>(istream& in_, SquareMatrix& matrix_)
 {
 	for (size_t i = 0; i < matrix_.rows; ++i)
 		delete[] matrix_.matrix[i];
@@ -266,13 +326,13 @@ istream& operator>>(istream& in_, Matrix& matrix_)
 
 	matrix_.rows = matrix_.columns = 0;
 
-	cout << "Enter Matrix Size:" << endl << "> ";
-	in_ >> matrix_.rows >> matrix_.columns;
+	cout << endl << "Enter Matrix Size:" << endl << "> ";
+	in_ >> matrix_.rows;
 
-	while (matrix_.rows < 0 || matrix_.columns < 0)
+	while (matrix_.rows < 0)
 	{
-		cout << endl << "Rows And Columns Amount Must Be Higher Then 0. Try Again" << endl << "> ";
-		in_ >> matrix_.rows >> matrix_.columns;
+		cout << endl << "Rows Amount Must Be Higher Then 0. Try Again" << endl << "> ";
+		in_ >> matrix_.rows;
 	}
 
 	if (!in_.good())
@@ -282,7 +342,7 @@ istream& operator>>(istream& in_, Matrix& matrix_)
 
 	matrix_.Memmory(matrix_.rows, matrix_.columns);
 
-	cout << endl << "Enter Matrix:" << endl;
+	cout << endl << "Enter Matrix:" << endl << "> ";
 
 	for (size_t i = 0; i < matrix_.rows; ++i)
 	{
@@ -290,18 +350,18 @@ istream& operator>>(istream& in_, Matrix& matrix_)
 		{
 			in_ >> matrix_.matrix[i][j];
 
-			if (!in_.good())
-				exit(1);
-
 			if (in_.peek() == ' ' || in_.peek() == '\n')
 				in_.ignore();
+
+			if (!in_.good())
+				exit(1);
 		}
 	}
 
 	return in_;
 }
 
-ostream& operator<<(ostream& out_, const Matrix& matrix_)
+ostream& operator<<(ostream& out_, const SquareMatrix& matrix_)
 {
 	if (matrix_.rows == 1)
 	{

@@ -4,24 +4,22 @@
 #include <stdlib.h>
 #include <time.h>
 
+using namespace std;
+
 class Matrix
 {
 protected:
-	size_t rows;
-	size_t columns;
+	int rows;
+	int columns;
 	double** matrix;
 
-	double** Memmory(size_t rows_, size_t columns_);
+	void Memmory(int rows_, int columns_);
 public:
-	Matrix(size_t rows_ = 2, size_t columns_ = 3);
+	Matrix(int rows_ = 2, int columns_ = 3);
 
 	Matrix(const Matrix& other_);
 
-	~Matrix();
-
-	void MatrixPrint();
-
-	void SetRandMatrix();
+	virtual ~Matrix();
 
 	void SetElement(size_t row_, size_t column_, double data_) { matrix[row_][column_] = data_; }
 
@@ -35,15 +33,11 @@ public:
 
 	Matrix operator* (int data_) const;
 
-	// TODO: Matrix operator/ (const Matrix& other_) const;
-
 	Matrix operator/ (int data_) const;
 
 	Matrix& operator+= (const Matrix& other_);
 
 	Matrix& operator-= (const Matrix& other_);
-
-	// TODO: Matrix& operator/= (const Matrix& other_);
 
 	Matrix& operator/= (int data_);
 
@@ -56,4 +50,8 @@ public:
 	bool operator!=(const Matrix& other_);
 
 	Matrix Transpon();
+
+	friend istream& operator>>(istream& in_, Matrix& matrix_);
+
+	friend ostream& operator<<(ostream& out_, const Matrix& matrix_);
 };
