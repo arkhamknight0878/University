@@ -13,12 +13,12 @@ double Exponent::Factorial(size_t argument_)
 	return result;
 }
 
-Exponent::Exponent(double eps_ = 0, double argument_ = 0) : Function(argument_)
+Exponent::Exponent()
 {
+	eps = 0;
+
 	name = new char[4];
 	strcpy(name, "e^x");
-
-	eps = eps_;
 }
 
 void Exponent::Calculate()
@@ -39,5 +39,5 @@ void Exponent::Calculate()
 		result += component;
 	} while (abs(component) > eps);
 
-	cout << "y = " << result;
+	cout << "y = " << result << endl;
 }

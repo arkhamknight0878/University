@@ -5,14 +5,14 @@
 
 #include <math.h>
 
-class Exponent : protected Function
+class Exponent : public Function
 {
 private:
 	double eps;
 
 	double Factorial(size_t argument_);
 public:
-	Exponent(double eps_ = 0, double argument_ = 0);
+	Exponent();
 
 	~Exponent() override { delete[] name; }
 

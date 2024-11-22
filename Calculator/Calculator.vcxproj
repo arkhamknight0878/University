@@ -128,16 +128,17 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Exponent.cpp" />
-    <ClCompile Include="Function.cpp" />
     <ClCompile Include="Line.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Menu.cpp" />
+    <ClCompile Include="Polynomial.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Exponent.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Line.h" />
     <ClInclude Include="Menu.h" />
+    <ClInclude Include="Polynomial.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

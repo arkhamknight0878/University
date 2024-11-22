@@ -1,8 +1,12 @@
 #pragma once
 
 #include <iostream>
+#include <string>
 
 using namespace std;
+
+//#ifndef  FUNCTION_H
+//#define FUNCTION_H
 
 class Function
 {
@@ -10,7 +14,7 @@ protected:
 	char* name;
 	double argument;
 public:
-	Function(double argument_ = 0) { name[0] = '\0'; argument = argument_; }
+	Function() { name = nullptr; argument = 0; }
 
 	virtual ~Function() {};
 
@@ -19,3 +23,4 @@ public:
 	virtual char* GetName() = 0;
 };
 
+//#endif // ! FUNCTION_H

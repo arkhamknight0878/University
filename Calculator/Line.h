@@ -3,13 +3,13 @@
 
 #include "Function.h"
 
-class Line : protected Function
+class Line : public Function
 {
 private:
 	double a;
 	double b;
 public:
-	Line(double a_ = 0, double b_ = 0, double argument_ = 0);
+	Line();
 
 	~Line() override { delete[] name; }
 
