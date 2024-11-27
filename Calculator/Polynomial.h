@@ -1,19 +1,18 @@
 #pragma once
+#pragma warning (disable: 4996)
 
 #include "Function.h"
 
 class Polynomial : public Function
 {
 private:
-	size_t pow;
-	double* arr;
+	double* coefficients;
 public:
 	Polynomial();
 
-	Polynomial(size_t numerator_);
+	~Polynomial() override { delete[] coefficients; }
 
-	~Polynomial() { delete[] arr; }
+	char* GetName() override { return name; }
 
-	char* GetName() { return name; }
+	void Calculate() override;
 };
-

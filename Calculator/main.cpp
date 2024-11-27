@@ -1,21 +1,21 @@
 #include "Menu.h"
-#include "Function.h"
-#include "Line.h"
-#include "Exponent.h"
 
 int main()
 {
-	Line line_finction;
-	Exponent exponent_function;
+	Line line_f;
+	Exponent exp_f;
+	Polynomial pol_f;
 
-	Function* ptrs[] = { &line_finction, &exponent_function, nullptr };
+	Function* arr[] = { &line_f, &exp_f, &pol_f, nullptr };
 
-	Menu menu(ptrs, 3);
+	Menu menu(arr);
 
 	while (Function* obj = menu.SelectedFunction())
+	{
 		obj->Calculate();
+	}
 
-	cout << endl << "FIN" << endl;
+	cout << "FIN" << endl;
 
 	return 0;
 }

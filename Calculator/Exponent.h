@@ -14,10 +14,11 @@ private:
 public:
 	Exponent();
 
-	~Exponent() override { delete[] name; }
+	Exponent(double eps_, double argument_);
+
+	~Exponent() override { ; }
 
 	char* GetName() override { return name; }
 
 	void Calculate() override;
 };
-

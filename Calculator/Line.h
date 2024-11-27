@@ -11,10 +11,11 @@ private:
 public:
 	Line();
 
-	~Line() override { delete[] name; }
+	Line(double a_, double b_, double argument_);
+
+	~Line() { ; }
 
 	char* GetName() override { return name; }
 
 	void Calculate() override;
 };
-

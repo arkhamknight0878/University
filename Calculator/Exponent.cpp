@@ -3,11 +3,11 @@
 double Exponent::Factorial(size_t argument_)
 {
 	if (!argument_)
-		return 0.0;
+		return 1.0;
 
 	double result = 1.0;
 
-	for (size_t i = 0; i <= argument_; ++i)
+	for (size_t i = argument_; i != 1; --i)
 		result *= i;
 
 	return result;
@@ -21,12 +21,20 @@ Exponent::Exponent()
 	strcpy(name, "e^x");
 }
 
+Exponent::Exponent(double eps_, double argument_) : Function(argument_)
+{
+	eps = eps_;
+
+	name = new char[4];
+	strcpy(name, "e^x");
+}
+
 void Exponent::Calculate()
 {
-	cout << "Enter Epsilone" << endl << "> ";
+	cout << endl << "Enter Epsilone" << endl << "> ";
 	cin >> eps;
 
-	cout << "Enter x" << endl << "> ";
+	cout << endl << "Enter x" << endl << "> ";
 	cin >> argument;
 
 	double result = 1;
@@ -39,5 +47,5 @@ void Exponent::Calculate()
 		result += component;
 	} while (abs(component) > eps);
 
-	cout << "y = " << result << endl;
+	cout << endl << "y = " << result << endl << endl;
 }
