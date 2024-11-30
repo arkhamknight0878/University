@@ -12,9 +12,7 @@ protected:
 public:
 	Function() { name = new char; name[0] = '\0'; argument = 0; }
 
-	Function(double argument_) { name = new char; name[0] = '\0'; argument = argument_; }
-
-	virtual ~Function() { delete[] name; };
+	virtual ~Function() {};
 
 	virtual void Calculate() = 0;
 

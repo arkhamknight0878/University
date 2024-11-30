@@ -14,8 +14,6 @@ private:
 public:
 	Exponent();
 
-	Exponent(double eps_, double argument_);
-
 	~Exponent() override { ; }
 
 	char* GetName() override { return name; }

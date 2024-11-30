@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Exponent.cpp" />
     <ClCompile Include="Function.cpp" />
     <ClCompile Include="Line.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="Polynomial.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Cube.h" />
     <ClInclude Include="Exponent.h" />
     <ClInclude Include="Function.h" />
     <ClInclude Include="Line.h" />

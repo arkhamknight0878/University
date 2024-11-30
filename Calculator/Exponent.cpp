@@ -21,14 +21,6 @@ Exponent::Exponent()
 	strcpy(name, "e^x");
 }
 
-Exponent::Exponent(double eps_, double argument_) : Function(argument_)
-{
-	eps = eps_;
-
-	name = new char[4];
-	strcpy(name, "e^x");
-}
-
 void Exponent::Calculate()
 {
 	cout << endl << "Enter Epsilone" << endl << "> ";
@@ -45,6 +37,7 @@ void Exponent::Calculate()
 	{
 		component = pow(argument, amount) / Factorial(amount);
 		result += component;
+		++amount;
 	} while (abs(component) > eps);
 
 	cout << endl << "y = " << result << endl << endl;
