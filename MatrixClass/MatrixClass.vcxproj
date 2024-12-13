@@ -129,13 +129,18 @@
   <ItemGroup>
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Matrix.cpp" />
+    <ClCompile Include="MatrixException.cpp" />
     <ClCompile Include="Menu.cpp" />
     <ClCompile Include="SquareMatrix.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Matrix.h" />
+    <ClInclude Include="MatrixException.h" />
     <ClInclude Include="Menu.h" />
     <ClInclude Include="SquareMatrix.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Matrix.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

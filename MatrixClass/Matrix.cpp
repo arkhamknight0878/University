@@ -4,8 +4,22 @@ void Matrix::Memmory(int rows_, int columns_)
 {
 	matrix = new double* [rows_];
 
-	for (size_t i = 0; i < rows_; ++i)
+	for (int i = 0; i < rows_; ++i)
 		matrix[i] = new double[columns_];
+}
+
+void Matrix::Clear()
+{
+	if (!matrix)
+		return;
+
+	rows = columns = 0;
+
+	for (int i = 0; i < rows; ++i)
+		delete[] matrix[i];
+
+	delete[] matrix;
+	matrix = nullptr;
 }
 
 Matrix::Matrix(int rows_, int columns_)
@@ -18,9 +32,9 @@ Matrix::Matrix(int rows_, int columns_)
 
 	Memmory(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			matrix[i][j] = 0;
 	}
 }
@@ -32,16 +46,16 @@ Matrix::Matrix(const Matrix& other_)
 
 	Memmory(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			matrix[i][j] = other_.matrix[i][j];
 	}
 }
 
 Matrix::~Matrix()
 {
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
 		delete[] matrix[i];
 	}
@@ -49,16 +63,36 @@ Matrix::~Matrix()
 	delete[] matrix;
 }
 
+Matrix& Matrix::operator=(const Matrix& other_)
+{
+	if (this == &other_)
+		return *this;
+
+	Clear();
+
+	Memmory(other_.rows, other_.columns);
+	rows = other_.rows;
+	columns = other_.columns;
+
+	for (int i = 0; i < rows; ++i)
+	{
+		for (int j = 0; j < columns; ++j)
+			matrix[i][j] = other_.matrix[i][j];
+	}
+
+	return *this;
+}
+
 Matrix Matrix::operator+(const Matrix& other_) const
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		throw DiffSize();
 
 	Matrix result(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			result.matrix[i][j] = matrix[i][j] + other_.matrix[i][j];
 	}
 
@@ -68,13 +102,13 @@ Matrix Matrix::operator+(const Matrix& other_) const
 Matrix Matrix::operator-(const Matrix& other_) const
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		throw DiffSize();
 
 	Matrix result(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			result.matrix[i][j] = matrix[i][j] - other_.matrix[i][j];
 	}
 
@@ -84,17 +118,17 @@ Matrix Matrix::operator-(const Matrix& other_) const
 Matrix Matrix::operator*(const Matrix& other_) const
 {
 	if (rows != other_.columns || columns != other_.rows)
-		throw 2;
+		throw DiffRowsColumns();
 
 	Matrix result(rows, other_.columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < other_.columns; ++j)
+		for (int j = 0; j < other_.columns; ++j)
 		{
 			double interim_result = 0;
 
-			for (size_t k = 0; k < columns; ++k)
+			for (int k = 0; k < columns; ++k)
 				interim_result += matrix[i][k] * other_.matrix[k][j];
 
 			result.matrix[i][j] = interim_result;
@@ -108,23 +142,10 @@ Matrix Matrix::operator*(int data_) const
 {
 	Matrix result(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			result.matrix[i][j] = matrix[i][j] * data_;
-	}
-
-	return result;
-}
-
-Matrix Matrix::operator/(int data_) const
-{
-	Matrix result(rows, columns);
-
-	for (size_t i = 0; i < rows; ++i)
-	{
-		for (size_t j = 0; j < columns; ++j)
-			result.matrix[i][j] = matrix[i][j] / data_;
 	}
 
 	return result;
@@ -133,11 +154,11 @@ Matrix Matrix::operator/(int data_) const
 Matrix& Matrix::operator+=(const Matrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		throw DiffRowsColumns();
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			matrix[i][j] += other_.matrix[i][j];
 	}
 
@@ -147,11 +168,11 @@ Matrix& Matrix::operator+=(const Matrix& other_)
 Matrix& Matrix::operator-=(const Matrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		throw DiffSize();
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			matrix[i][j] -= other_.matrix[i][j];
 	}
 
@@ -160,9 +181,9 @@ Matrix& Matrix::operator-=(const Matrix& other_)
 
 Matrix& Matrix::operator/=(int data_)
 {
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 			matrix[i][j] /= data_;
 	}
 
@@ -172,24 +193,24 @@ Matrix& Matrix::operator/=(int data_)
 Matrix& Matrix::operator*=(const Matrix& other_)
 {
 	if (rows != other_.columns || columns != other_.rows)
-		throw 2;
+		throw DiffRowsColumns();
 
 	Matrix temp = *this;
 	columns = other_.columns;
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 		delete[] matrix[i];
 	delete[] matrix;
 
 	Memmory(rows, columns);
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < other_.columns; ++j)
+		for (int j = 0; j < other_.columns; ++j)
 		{
 			double interim_result = 0;
 
-			for (size_t k = 0; k < temp.columns; ++k)
+			for (int k = 0; k < temp.columns; ++k)
 				interim_result += temp.matrix[i][k] * other_.matrix[k][j];
 
 			matrix[i][j] = interim_result;
@@ -199,12 +220,12 @@ Matrix& Matrix::operator*=(const Matrix& other_)
 	return *this;
 }
 
-Matrix& Matrix::operator*=(int data_)
+Matrix& Matrix::operator*=(const double data_)
 {
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
-			matrix[i][j] = matrix[i][j] * data_;
+		for (int j = 0; j < columns; ++j)
+			matrix[i][j] *= data_;
 	}
 
 	return *this;
@@ -213,11 +234,11 @@ Matrix& Matrix::operator*=(int data_)
 bool Matrix::operator==(const Matrix& other_)
 {
 	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
+		return false;
 
-	for (size_t i = 0; i < rows; ++i)
+	for (int i = 0; i < rows; ++i)
 	{
-		for (size_t j = 0; j < columns; ++j)
+		for (int j = 0; j < columns; ++j)
 		{
 			if (matrix[i][j] != other_.matrix[i][j])
 				return false;
@@ -227,30 +248,15 @@ bool Matrix::operator==(const Matrix& other_)
 	return true;
 }
 
-bool Matrix::operator!=(const Matrix& other_)
-{
-	if (rows != other_.rows || columns != other_.columns)
-		throw 2;
-
-	for (size_t i = 0; i < rows; ++i)
-	{
-		for (size_t j = 0; j < columns; ++j)
-		{
-			if (matrix[i][j] != other_.matrix[i][j])
-				return true;
-		}
-	}
-
-	return false;
-}
+bool Matrix::operator!=(const Matrix& other_) { return !(&other_ == this); }
 
 Matrix Matrix::Transpon()
 {
 	Matrix result(columns, rows);
 
-	for (size_t i = 0; i < result.rows; ++i)
+	for (int i = 0; i < result.rows; ++i)
 	{
-		for (size_t j = 0; j < result.columns; ++j)
+		for (int j = 0; j < result.columns; ++j)
 			result.matrix[i][j] = matrix[j][i];
 	}
 
@@ -259,42 +265,78 @@ Matrix Matrix::Transpon()
 
 istream& operator>>(istream& in_, Matrix& matrix_)
 {
-	for (size_t i = 0; i < matrix_.rows; ++i)
-		delete[] matrix_.matrix[i];
+	if (matrix_.matrix)
+		matrix_.Clear();
 
-	delete[] matrix_.matrix;
-
-	matrix_.rows = matrix_.columns = 0;
-
-	cout << "Enter Matrix Size:" << endl << "> ";
-	in_ >> matrix_.rows >> matrix_.columns;
-
-	while (matrix_.rows < 0 || matrix_.columns < 0)
+	cout << "Enter Rows & Columns:" << endl;
+	cout << "Rows: "; in_ >> matrix_.rows;
+	if (!in_.good() || (matrix_.rows < 0))
 	{
-		cout << endl << "Rows And Columns Amount Must Be Higher Then 0. Try Again" << endl << "> ";
-		in_ >> matrix_.rows >> matrix_.columns;
+		in_.setstate(ios::failbit);
+		throw IncorrectInput();
 	}
-
-	if (!in_.good())
-		exit(1);
-
-	matrix_.columns = matrix_.rows;
+	cout << "Colums: "; in_ >> matrix_.columns;
+	if (!in_.good() || (matrix_.columns < 0))
+	{
+		in_.setstate(ios::failbit);
+		throw IncorrectInput();
+	}
 
 	matrix_.Memmory(matrix_.rows, matrix_.columns);
 
-	cout << endl << "Enter Matrix:" << endl;
-
-	for (size_t i = 0; i < matrix_.rows; ++i)
+	cout << "Enter Elements:" << endl;
+	for (int i = 0; i < matrix_.rows; ++i)
 	{
-		for (size_t j = 0; j < matrix_.columns; ++j)
+		for (int j = 0; j < matrix_.columns; ++j)
 		{
 			in_ >> matrix_.matrix[i][j];
 
 			if (!in_.good())
-				exit(1);
+			{
+				in_.setstate(ios::failbit);
+				throw IncorrectInput();
+			}
 
-			if (in_.peek() == ' ' || in_.peek() == '\n')
+			if ((in_.peek() == ' ') || (in_.peek() == '\n'))
 				in_.ignore();
+		}
+	}
+
+	return in_;
+}
+
+ifstream& operator>>(ifstream& in_, Matrix& matrix_)
+{
+	if (!in_.is_open())
+		return in_;
+
+	if (matrix_.matrix)
+		matrix_.Clear();
+
+	in_ >> matrix_.rows;
+	if (matrix_.rows < 0)
+	{
+		in_.setstate(ios::failbit);
+		throw IncorrectInput();
+	}
+	in_ >> matrix_.columns;
+	if (matrix_.columns < 0)
+	{
+		in_.setstate(ios::failbit);
+		throw IncorrectInput();
+	}
+
+	matrix_.Memmory(matrix_.rows, matrix_.columns);
+
+	for (int i = 0; i < matrix_.rows; ++i)
+	{
+		for (int j = 0; j < matrix_.columns; ++j)
+		{
+			if (!(in_ >> matrix_.matrix[i][j]))
+			{
+				in_.setstate(ios::failbit);
+				throw IncorrectInput();
+			}
 		}
 	}
 
@@ -303,64 +345,16 @@ istream& operator>>(istream& in_, Matrix& matrix_)
 
 ostream& operator<<(ostream& out_, const Matrix& matrix_)
 {
-	if (matrix_.rows == 1)
-	{
-		out_ << "(";
-
-		for (int i = 0; i < matrix_.columns - 1; ++i)
-			out_ << matrix_.matrix[0][i] << " ";
-
-		out_ << matrix_.matrix[0][matrix_.columns - 1];
-
-		out_ << ")";
-
+	if (!matrix_.matrix)
 		return out_;
-	}
-	else if (matrix_.rows == 2)
+
+	for (int i = 0; i < matrix_.rows; ++i)
 	{
-		out_ << "/";
+		for (int j = 0; j < matrix_.columns; ++j)
+			out_ << matrix_.matrix[i][j] << ' ';
 
-		for (int i = 0; i < matrix_.rows; ++i)
-		{
-			for (int j = 0; j < matrix_.columns - 1; ++j)
-				out_ << matrix_.matrix[i][j] << " ";
-
-			out_ << matrix_.matrix[i][matrix_.columns - 1];
-
-			if (i == 0)
-				out_ << "\\" << endl << "\\";
-			else
-			{
-				out_ << "/";
-				return out_;
-			}
-		}
+		out_ << endl;
 	}
-	else
-	{
-		for (int i = 0; i < matrix_.rows; ++i)
-		{
-			if (!i)
-				out_ << "/";
-			else if (i == matrix_.rows - 1)
-				out_ << "\\";
-			else
-				out_ << "|";
 
-			for (int j = 0; j < matrix_.columns - 1; ++j)
-				out_ << matrix_.matrix[i][j] << " ";
-
-			out_ << matrix_.matrix[i][matrix_.columns - 1];
-
-			if (!i)
-				out_ << "\\" << endl;
-			else if (i == matrix_.rows - 1)
-			{
-				out_ << "/";
-				return out_;
-			}
-			else
-				out_ << "|" << endl;
-		}
-	}
+	return out_;
 }
