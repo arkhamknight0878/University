@@ -80,7 +80,7 @@ namespace stq
 	}
 }
 
-std::string CountingRhyme(const std::vector<std::string>& names_vector_, std::vector<std::string>& dropout_oreder_, int dropout_frequency_)
+std::string RhymeViaList(const std::vector<std::string> names_vector_, std::vector<std::string>& dropout_oreder_, int dropout_frequency_)
 {
 	if (!names_vector_.size())
 	{
@@ -102,9 +102,103 @@ std::string CountingRhyme(const std::vector<std::string>& names_vector_, std::ve
 	return names_vector_[*it];
 }
 
+std::string RhymeViaVector(std::vector<std::string> names_vector_, std::vector<std::string>& dropout_oreder_, int dropout_frequency_)
+{
+	auto it = names_vector_.begin();
+
+	while (names_vector_.size() != 1)
+	{
+		for (int i = 0; i < dropout_frequency_ - 1; ++i)
+		{
+			if (it == names_vector_.end())
+				it = names_vector_.begin();
+
+			++it;
+		}
+
+		if (it == names_vector_.end())
+			it = names_vector_.begin();
+
+		dropout_oreder_.push_back(*it);
+		it = names_vector_.erase(it);
+	}
+
+	return *it;
+}
+
+template <class T>
+void BellSort(std::vector<T>& to_sort_)
+{
+	if (!to_sort_.size() || to_sort_.size() == 1)
+		return;
+
+	int size = to_sort_.size();
+	T* new_arr = new T[size];
+	T min_element = std::numeric_limits<T>::max();
+	T current = min_element;
+
+	int right_index = 0;
+	int left_index = 0;
+
+	bool flag = false;
+
+	auto it = to_sort_.begin();
+	while (it != to_sort_.end())
+	{
+		if (*it < min_element)
+			min_element = *it;
+
+		++it;
+	}
+	right_index++;
+
+	new_arr[size - 1] = min_element;
+
+	while ((right_index + left_index) < size)
+	{
+		it = to_sort_.begin();
+		while (it != to_sort_.end())
+		{
+			if (*it < current && *it > min_element)
+				current = *it;
+
+			++it;
+		}
+
+		if (!flag)
+		{
+			new_arr[left_index] = current;
+			flag = true;
+			left_index++;
+		}
+		else
+		{
+			new_arr[size - right_index - 1] = current;
+			flag = false;
+			right_index++;
+		}
+		min_element = current;
+		current = std::numeric_limits<T>::max();
+	}
+
+
+	std::vector<T> res;
+	for (int i = 0; i < size; i++)
+		res.push_back(new_arr[i]);
+	to_sort_ = res;
+
+	delete[] new_arr;
+	return;
+}
+
 int main()
 {
-	std::vector<std::string> names_vector;
+	std::vector<int> vector = { 9,12,8,6,3,1,15 };
+	BellSort(vector);
+
+	stq::vector_output(vector);
+
+	/*std::vector<std::string> names_vector;
 	std::vector<std::string> droped_order;
 	std::string names;
 	std::string winner;
@@ -113,15 +207,25 @@ int main()
 	stq::string_input(names);
 	stq::str_vector_from_input(names_vector, names);
 
-	winner = CountingRhyme(names_vector, droped_order, 3);
+	std::cout << std::endl << "Via Circular List:" << std::endl << std::endl;
+
+	winner = RhymeViaList(names_vector, droped_order, 3);
 
 	std::cout << "Winner: " << winner << std::endl;
-	std::cout << "Drop Out Order: "; stq::vector_output(droped_order);
+	std::cout << "Drop Out Order: "; stq::vector_output(droped_order); std::cout << std::endl << std::endl;
+
+	std::cout << std::endl << "Via Circular List:" << std::endl << std::endl;
+
+	droped_order.clear();
+	winner = RhymeViaVector(names_vector, droped_order, 3);
+
+	std::cout << "Winner: " << winner << std::endl;
+	std::cout << "Drop Out Order: "; stq::vector_output(droped_order); std::cout << std::endl << std::endl;*/
 
 	return 0;
 }
 
-// TODO: add cecker if container is empty in insert's
+// TODO: add checker if container is empty in insert's
 
 // pop_front & pop_back							- throw 1 : nothing to pop
 // CircularListClass(int size_)					- throw 2 : size can not be negative value
