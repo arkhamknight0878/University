@@ -191,6 +191,68 @@ void BellSort(std::vector<T>& to_sort_)
 	return;
 }
 
+void bell_out(vector<double> v)
+{
+	int sz = v.size();
+	int tp = sz / 2;
+	int itp = 1;
+	int k = 0;
+	double lx, rx;
+	if (v.size() % 2 != 0)
+	{
+		while (tp != -1)
+		{
+			for (int i = 0; i < tp;i++)
+				cout << "    ";
+			
+			lx = v[sz / 2 - k];
+			rx = v[sz / 2 + k];
+			if (lx == rx)
+			{
+				cout << lx;
+			}
+			else
+			{
+				cout << lx;
+				for (int i = 0; i < itp-1; i++)
+					cout << "    ";
+				cout << rx;
+			}
+			for (int i = 0; i < tp; i++)
+				cout << "    ";
+			tp--;
+			itp == 0 ? itp++ : itp += 2;
+			k++;
+			cout << endl;
+		}
+
+	}
+	else
+	{
+		tp--;
+		itp++;
+		while (tp != -1)
+		{
+			lx = v[sz / 2 - k - 1];
+			rx = v[sz / 2 + k];
+
+
+			for (int i = 0; i < tp; i++)
+				cout << "    ";
+			cout << lx;
+			for (int i = 0; i < itp; i++)
+				cout << "    ";
+			cout << rx;
+			for (int i = 0; i < tp; i++)
+				cout << "    ";
+			itp += 2;
+			tp--;
+			k++;
+			cout << endl;
+		}
+	}
+}
+
 int main()
 {
 	std::vector<int> vector = { 9,12,8,6,3,1,15 };
