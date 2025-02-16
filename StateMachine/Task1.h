@@ -1,0 +1,27 @@
+#pragma once
+
+#include "StateMachine.h"
+
+enum States {s_one = 3, s_even_ones, s_not_even_zeroes, s_even_zeroes };
+
+const int states_amount = 7;
+
+class Task1 : public StateMachine
+{
+private:
+	typedef int(Task1::* func_ptr)();
+	func_ptr states_table[states_amount][alfabet_size];
+
+	int One();
+
+	int EOnes();
+
+	int NEZeroes();
+
+	int EZeroes();
+
+public:
+	Task1();
+
+	bool Parse(const std::string str_);
+};

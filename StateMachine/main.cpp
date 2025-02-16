@@ -1,4 +1,4 @@
-#include "StateMachine.h"
+#include "Task4.h"
 
 #include <string>
 
@@ -22,12 +22,13 @@ namespace stq
 
 int main()
 {
-	StateMachine machine;
+	Task4 machine;
 	std::string input_string;
 	std::cout << "Enter Your String:" << std::endl;
 	stq::string_input(input_string);
 
-	bool is_oke = 
+	bool is_oke = machine.Parse(input_string);
+	is_oke ? std::cout << "Oke" : std::cout << "Not Oke";
 
 	return 0;
 }
