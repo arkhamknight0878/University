@@ -27,22 +27,46 @@ Task2::Task2()
 	states_table[s_even_zeroes][ln] = &Task2::End;
 }
 
-bool Task2::Parse(const std::string str_)
+bool Task2::Parse(const char* file_name_)
 {
 	int current_state = s_begin;
-	auto it = str_.begin();
-
-	while (current_state != s_end && current_state != s_error)
+	std::ifstream fp(file_name_);
+	if (!fp)
 	{
-		if (it == str_.end())
-			value = '\n';
-		else
-			value = *(it++);
-		current_state = (this->*states_table[current_state][Transliterator(value)])();
+		std::cout << "File Was Not Opened";
+		return false;
 	}
 
-	if (current_state == s_error)
-		return false;
-	else
-		return true;
+	while (fp)
+	{
+		value = fp.get();
+
+		if (value != '\n')
+			std::cout << (char)value;
+
+		current_state = (this->*states_table[current_state][Transliterator(value)])();
+
+		if (current_state == s_end || current_state == s_error)
+		{
+			if (current_state == s_error)
+			{
+				while (fp.peek() != '\n' && fp.peek() != EOF)
+				{
+					value = fp.get();
+					if (value != '\n' && value != EOF)
+						std::cout << (char)value;
+				}
+
+				fp.ignore();
+				std::cout << " : Not Oke";
+			}
+			else
+				std::cout << " : Oke";
+
+			current_state = s_begin;
+			std::cout << std::endl;
+		}
+	}
+
+	fp.close();
 }

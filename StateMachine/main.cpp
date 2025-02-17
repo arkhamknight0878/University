@@ -1,4 +1,4 @@
-#include "Task4.h"
+#include "Task2.h"
 
 #include <string>
 
@@ -22,13 +22,24 @@ namespace stq
 
 int main()
 {
-	Task4 machine;
+	Task2 machine;
 	std::string input_string;
-	std::cout << "Enter Your String:" << std::endl;
-	stq::string_input(input_string);
+	/*std::cout << "Enter Your String:" << std::endl;
+	stq::string_input(input_string);*/
 
-	bool is_oke = machine.Parse(input_string);
-	is_oke ? std::cout << "Oke" : std::cout << "Not Oke";
+	bool is_oke = machine.Parse("TextFile1.txt");
 
 	return 0;
 }
+
+/*000
+1111000
+111000
+110000
+110006
+00011000
+110030
+000011
+0000
+117000
+11511000*/

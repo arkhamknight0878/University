@@ -12,8 +12,8 @@ int StateMachine::Transliterator(int ch_)
 		return zero;
 	else if (ch_ == '1')
 		return one;
-	else if (ch_ == '\n')
+	else if (ch_ == '\n' || ch_ == EOF)
 		return ln;
 	else
-		return -1;
+		return other;
 }

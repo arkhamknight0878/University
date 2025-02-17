@@ -23,5 +23,5 @@ private:
 public:
 	Task1();
 
-	bool Parse(const std::string str_);
+	bool Parse(const char* file_name_);
 };

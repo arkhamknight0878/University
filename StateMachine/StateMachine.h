@@ -4,9 +4,9 @@
 #include <fstream>
 
 enum StandartStates {s_begin, s_error, s_end};
-enum Alphabeth {zero, one, ln};
+enum Alphabeth {zero, one, ln, other};
 
-const int alfabet_size = 3;
+const int alfabet_size = 4;
 
 class StateMachine
 {
