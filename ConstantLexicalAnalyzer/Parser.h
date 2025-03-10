@@ -89,6 +89,10 @@ private:
 	int Error3();
 
 	int Error4();
+
+	int Error5();
+
+	int Error6();
 public:
 	Parser()
 	{
@@ -105,13 +109,13 @@ public:
 		parser_table[s_q1][EXP] = &Parser::P4;
 		parser_table[s_q1][DOT] = &Parser::P5;
 		parser_table[s_q1][END] = &Parser::K1;
-		parser_table[s_q1][SIGN] = parser_table[s_q1][END] = &Parser::Error1;
+		parser_table[s_q1][SIGN] = &Parser::Error1;
 		parser_table[s_q1][OTHER] = &Parser::ErrorOther;
 
 		parser_table[s_q2][DIGIT] = &Parser::P6;
 		parser_table[s_q2][EXP] = &Parser::P7;
 		parser_table[s_q2][END] = &Parser::K2;
-		parser_table[s_q2][DOT] = parser_table[s_q2][SIGN] = parser_table[s_q2][END] = &Parser::Error2;
+		parser_table[s_q2][DOT] = parser_table[s_q2][SIGN] = &Parser::Error2;
 		parser_table[s_q2][OTHER] = &Parser::ErrorOther;
 
 		parser_table[s_q3][DIGIT] = &Parser::P8;
@@ -126,9 +130,11 @@ public:
 		parser_table[s_q5][DIGIT] = &Parser::P11;
 		parser_table[s_q5][END] = &Parser::K3;
 		parser_table[s_q5][OTHER] = &Parser::ErrorOther;
+		parser_table[s_q5][EXP] = parser_table[s_q5][DOT] = parser_table[s_q5][SIGN] = &Parser::Error5;
 
 		parser_table[s_q6][DIGIT] = &Parser::P12;
 		parser_table[s_q6][OTHER] = &Parser::ErrorOther;
+		parser_table[s_q6][EXP] = parser_table[s_q6][DOT] = parser_table[s_q6][SIGN] = &Parser::Error5;
 
 		parser_table[s_Skip][DIGIT] = &Parser::Skip;
 		parser_table[s_Skip][EXP] = &Parser::Skip;

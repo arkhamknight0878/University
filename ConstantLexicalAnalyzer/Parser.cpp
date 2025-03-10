@@ -195,4 +195,23 @@ int Parser::Error3()
 	return s_Skip;
 }
 
+int Parser::Error4()
+{
+	std::cout << "Ошибка: Ожидались цифра после знака" << std::endl;
 
+	return s_Skip;
+}
+
+int Parser::Error5()
+{
+	std::cout << "Ошибка: Ожидались цифра, входящая в дробную часть числа" << std::endl;
+
+	return s_Skip;
+}
+
+int Parser::Error6()
+{
+	std::cout << "Ошибка: Ожидались цифра" << std::endl;
+
+	return s_Skip;
+}

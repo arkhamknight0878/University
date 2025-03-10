@@ -9,5 +9,9 @@ int main()
 
 	p.parse("true_test.txt");
 
+	std::cout << std::endl << std::endl;
+
+	p.parse("false_test.txt");
+
 	return 0;
 }
