@@ -12,18 +12,22 @@ private:
 
 	std::string input;
 	std::string magazin;
+	std::string output;
 	fptr current_state;
 
 	char stack_head;
 	char input_head;
 
 	bool stop_flag;
+	bool error_flag;
 
 	void q1();
 
 	void q2();
 
 	void q3();
+
+	void rundown_output();
 public:
 	Automat();
 
