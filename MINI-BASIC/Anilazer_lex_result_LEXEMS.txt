@@ -1,0 +1,6 @@
+  0		LABEL 11
+  1		LET 18
+  2		OPERAND 287
+  3		LABEL 21
+  4		END -1
+  5		END_MARKER -1
