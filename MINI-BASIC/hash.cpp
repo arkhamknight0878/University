@@ -5,13 +5,13 @@ int string_hash::hash_function(int key_) { return key_ % 100; }
 void string_hash::initialize_table()
 {
     hash_table = new hash_element[table_size];
-    hash_table[0].token_value = 0;
+    hash_table[0].label = 0;
     hash_table[0].index = 0;
     hash_table[0].alt = 0;
 
     for (size_t i = 1; i < table_size; i++)
     {
-        hash_table[i].token_value = -1;
+        hash_table[i].label = -1;
         hash_table[i].index = -1;
         hash_table[i].alt = 0;
     }
@@ -26,13 +26,13 @@ void string_hash::expand()
 
     for (int i = 0; i < table_size; i++)
     {
-        new_table[i].token_value = hash_table[i].token_value;
+        new_table[i].label = hash_table[i].label;
         new_table[i].index = hash_table[i].index;
         new_table[i].alt = hash_table[i].alt;
     }
     for (int i = table_size; i < new_size; i++)
     {
-        new_table[i].token_value = -1;
+        new_table[i].label = -1;
         new_table[i].index = -1;
         new_table[i].alt = 0;
     }
@@ -56,7 +56,7 @@ int string_hash::collision_solving(int key_, int index_)
     if (hash_table[0].alt == 0)
     {
         hash_table[hash_index].alt = next_in_alt_table;
-        hash_table[next_in_alt_table].token_value = key_;
+        hash_table[next_in_alt_table].label = key_;
         hash_table[next_in_alt_table].index = index_;
 
         return next_in_alt_table++;
@@ -69,7 +69,7 @@ int string_hash::collision_solving(int key_, int index_)
         hash_table[alt_zero].alt = 0;
 
         hash_table[hash_index].alt = alt_zero;
-        hash_table[alt_zero].token_value = key_;
+        hash_table[alt_zero].label = key_;
         hash_table[alt_zero].index = index_;
 
     }
@@ -81,10 +81,10 @@ void string_hash::correct_removal(int key_)
 {
     int hash_index = hash_function(key_) + 1;
 
-    if (hash_table[hash_index].token_value == key_)
+    if (hash_table[hash_index].label == key_)
     {
         if (hash_table[hash_index].alt == 0)
-            hash_table[hash_index].token_value = -1;
+            hash_table[hash_index].label = -1;
         else
         {
             int prev = hash_index;
@@ -92,12 +92,12 @@ void string_hash::correct_removal(int key_)
             while (hash_table[hash_table[hash_index].alt].alt != 0)
                 hash_index = hash_table[hash_index].alt;
 
-            hash_table[prev].token_value = hash_table[hash_table[hash_index].alt].token_value;
+            hash_table[prev].label = hash_table[hash_table[hash_index].alt].label;
 
             hash_table[hash_table[hash_index].alt].alt = hash_table[0].alt;
             hash_table[0].alt = hash_table[hash_index].alt;
 
-            hash_table[hash_table[hash_index].alt].token_value = -1;
+            hash_table[hash_table[hash_index].alt].label = -1;
             hash_table[hash_table[hash_index].alt].index = -1;
             hash_table[hash_index].alt = 0;
         }
@@ -105,14 +105,14 @@ void string_hash::correct_removal(int key_)
     else
     {
 
-        while (hash_table[hash_table[hash_index].alt].token_value != key_)
+        while (hash_table[hash_table[hash_index].alt].label != key_)
             hash_index = hash_table[hash_index].alt;
 
         int temp = hash_table[hash_table[hash_index].alt].alt;
 
         hash_table[hash_table[hash_index].alt].alt = hash_table[0].alt;
 
-        hash_table[hash_table[hash_index].alt].token_value = -1;
+        hash_table[hash_table[hash_index].alt].label = -1;
         hash_table[hash_table[hash_index].alt].index = -1;
 
         hash_table[0].alt = hash_table[hash_index].alt;
@@ -129,7 +129,7 @@ int string_hash::find_alternative(int key_)
     while (hash_table[hash_index].alt != 0)
     {
         hash_index = hash_table[hash_index].alt;
-        if (hash_table[hash_index].token_value == key_)
+        if (hash_table[hash_index].label == key_)
             return hash_index;
     }
 
@@ -144,7 +144,7 @@ int string_hash::find_alternative_index(int key_)
     {
         hash_index = hash_table[hash_index].alt;
 
-        if (hash_table[hash_index].token_value == key_)
+        if (hash_table[hash_index].label == key_)
             return hash_table[hash_index].index;
     }
 
@@ -176,9 +176,9 @@ int string_hash::insert_element(int key_, int index_)
 {
     if (get_value(key_))
         return get_value(key_);
-    if (hash_table[hash_function(key_) + 1].token_value == -1)
+    if (hash_table[hash_function(key_) + 1].label == -1)
     {
-        hash_table[hash_function(key_) + 1].token_value = key_;
+        hash_table[hash_function(key_) + 1].label = key_;
         hash_table[hash_function(key_) + 1].index = index_;
 
         return (hash_function(key_) + 1);
@@ -200,12 +200,12 @@ int& string_hash::operator[](int index_) const
     if (index_ >= table_size)
         std::cerr << "Index out of rnage." << std::endl;
 
-    return hash_table[index_].token_value;
+    return hash_table[index_].label;
 }
 
 int string_hash::get_value(int key_)
 {
-    if (hash_table[hash_function(key_) + 1].token_value == key_)
+    if (hash_table[hash_function(key_) + 1].label == key_)
         return hash_function(key_) + 1;
     else
         return find_alternative(key_);
@@ -213,7 +213,7 @@ int string_hash::get_value(int key_)
 
 int string_hash::find_and_return_index(int key_)
 {
-    if (hash_table[hash_function(key_) + 1].token_value == key_)
+    if (hash_table[hash_function(key_) + 1].label == key_)
         return hash_table[hash_function(key_) + 1].index;
     else
         return find_alternative_index(key_);
@@ -223,7 +223,7 @@ bool string_hash::is_there_errors()
 {
     for (int i = 1; i < table_size; i++)
     {
-        if (hash_table[i].token_value != -1 && hash_table[i].index == -1)
+        if (hash_table[i].label != -1 && hash_table[i].index == -1)
             return true;
     }
 
@@ -234,20 +234,20 @@ void string_hash::hash_print()
 {
     for (int i = 0; i < main_area_size; i++)
     {
-        if (hash_table[i].token_value == -1 && hash_table[i].alt == 0)
+        if (hash_table[i].label == -1 && hash_table[i].alt == 0)
             continue;
 
         std::cout << "--------------------------" << std::endl;
-        std::cout << i << "\t | " << hash_table[i].token_value << "\t | " << hash_table[i].alt << "\t | " << std::endl;
+        std::cout << i << "\t | " << hash_table[i].label << "\t | " << hash_table[i].alt << "\t | " << std::endl;
     }
 
     std::cout << "==========================" << std::endl;
     for (int i = main_area_size; i < table_size; i++)
     {
-        if (hash_table[i].token_value == -1 && hash_table[i].alt == 0)
+        if (hash_table[i].label == -1 && hash_table[i].alt == 0)
             continue;
 
-        std::cout << i << "\t | " << hash_table[i].token_value << "\t | " << hash_table[i].alt << "\t | " << std::endl;
+        std::cout << i << "\t | " << hash_table[i].label << "\t | " << hash_table[i].alt << "\t | " << std::endl;
         std::cout << "--------------------------" << std::endl;
     }
 }
@@ -257,7 +257,7 @@ void string_hash::main_scope_print() const
     for (int i = 0; i < main_area_size; i++)
     {
         std::cout << "--------------------------------" << std::endl;
-        std::cout << i << "\t | " << hash_table[i].token_value << "\t | " << hash_table[i].alt << std::endl;
+        std::cout << i << "\t | " << hash_table[i].label << "\t | " << hash_table[i].alt << std::endl;
     }
 }
 
@@ -268,6 +268,11 @@ void string_hash::alternatives_print() const
     for (int i = main_area_size; i < table_size; i++)
     {
         std::cout << "--------------------------------" << std::endl;
-        std::cout << i << "\t | " << hash_table[i].token_value << "\t | " << hash_table[i].alt << std::endl;
+        std::cout << i << "\t | " << hash_table[i].label << "\t | " << hash_table[i].alt << std::endl;
     }
+}
+
+int string_hash::get_label(int index_)
+{
+    return hash_table[index_].label;
 }

@@ -421,7 +421,7 @@ void synthax_analyzer::start(const char* file_name_)
 	{
 		if (TL[i].token_class == 17) TL[i].token_class = 22;
 		if (TL[i].token_class == 18) TL[i].token_class = 23;
-		if (TL[i].token_class == 19) TL[i].token_class = 16 + TL[i].token_value;
+		if (TL[i].token_class == 19) TL[i].token_class = 16 + TL[i].label;
 	}
 
 	while (in < NTL)
@@ -559,8 +559,8 @@ void synthax_analyzer::F1()
 	stk.pop();
 	stk.push(16);
 	stk.push(2);
-	create_atom(2, TL[in].token_value);
-	str_num = TS.get_value(TL[in].token_value);
+	create_atom(2, TL[in].label);
+	str_num = TS.get_value(TL[in].label);
 	in++;
 
 }
@@ -573,8 +573,8 @@ void synthax_analyzer::F2()
 
 void synthax_analyzer::F3()
 {
-	create_atom(2, TL[in].token_value);
-	str_num = TS.get_value(TL[in].token_value);
+	create_atom(2, TL[in].label);
+	str_num = TS.get_value(TL[in].label);
 	in++;
 }
 
@@ -583,7 +583,7 @@ void synthax_analyzer::F4()
 	stk.pop();
 	stk.push(4);
 	stk.push(0);
-	stk.push(TL[in].token_value);
+	stk.push(TL[in].label);
 	stk.push(19);
 	stk.push(3);
 	stk.push(5);
@@ -594,7 +594,7 @@ void synthax_analyzer::F5()
 {
 	stk.pop();
 	stk.push(4);
-	create_atom(4, TL[in].token_value);
+	create_atom(4, TL[in].label);
 	in++;
 }
 
@@ -622,7 +622,7 @@ void synthax_analyzer::F7()
 {
 	stk.pop();
 	stk.push(4);
-	create_atom(5, TL[in].token_value);
+	create_atom(5, TL[in].label);
 	in++;
 }
 
@@ -637,7 +637,7 @@ void synthax_analyzer::F8()
 void synthax_analyzer::F9()
 {
 	int p, s, t, u, v, y;
-	p = TL[in].token_value;// Значение входа
+	p = TL[in].label;// Значение входа
 	s = NTX;// Значение поставляемому вызовом процедуры НОВТX
 	NTX++;
 	t = NTX;// Значение поставляемому другим вызовом процедуры НОВТХ
@@ -719,9 +719,9 @@ void synthax_analyzer::F13()
 	stk.pop();
 	stk.push(2);
 
-	create_atom(2, TL[in].token_value);
+	create_atom(2, TL[in].label);
 
-	str_num = TS.get_value(TL[in].token_value);
+	str_num = TS.get_value(TL[in].label);
 
 	++in;
 }
@@ -1008,7 +1008,7 @@ void synthax_analyzer::F28()
 	}
 
 	stk.pop();
-	stk.push(TL[tmp].token_value);
+	stk.push(TL[tmp].label);
 
 	while (!tmp_stack.empty())
 	{
@@ -1036,7 +1036,7 @@ void synthax_analyzer::b()
 		i--;
 	}
 	stk.pop();
-	stk.push(TL[in].token_value);
+	stk.push(TL[in].label);
 	while (!tmp.empty())
 	{
 		stk.push(tmp.top());

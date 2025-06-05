@@ -16,7 +16,7 @@ enum RKL { ROWLABEL = 1, OPERAND, REL_OPER, NEXT, LET, FOR, GOTO, GOSUB, LEFT_BR
 struct Token
 {
 	int token_class;
-	int token_value;
+	int label;
 };
 
 class lexical_analyzer

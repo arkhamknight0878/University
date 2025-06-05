@@ -9,7 +9,7 @@ class lexical_analyzer;
 
 struct hash_element
 {
-    int token_value;
+    int label;
     int index;
     int alt;
 };
@@ -62,6 +62,8 @@ public:
     void main_scope_print() const;
 
     void alternatives_print() const;
+
+    int get_label(int index_);
 };
 
 #endif

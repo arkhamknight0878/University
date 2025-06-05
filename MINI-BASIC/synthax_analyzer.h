@@ -17,7 +17,7 @@ struct atom
 
 class synthax_analyzer : public lexical_analyzer
 {
-private:
+protected:
 	typedef void(synthax_analyzer::* fptr)();
 	fptr T[20][24];			// ”прал€юща€ таблица
 

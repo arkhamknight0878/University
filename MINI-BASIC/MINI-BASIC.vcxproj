@@ -128,6 +128,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="assembler_code_generator.cpp" />
     <ClCompile Include="detection_table.cpp" />
     <ClCompile Include="hash.cpp" />
     <ClCompile Include="lexical_analyzer.cpp" />
@@ -135,6 +136,7 @@
     <ClCompile Include="synthax_analyzer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="assembler_code_generator.h" />
     <ClInclude Include="detection_table.h" />
     <ClInclude Include="hash.h" />
     <ClInclude Include="lexical_analyzer.h" />

@@ -1,35 +1,35 @@
-10 LET n = 14
-20 LET p = 7
+10 LET N = 14
+20 LET P = 7
 
 30 REM Проверяем первое число на простоту
-40 LET T = n
+40 LET T = N
 50 GOSUB 1000
-60 IF r = 0 GOTO 170
+60 IF R = 0 GOTO 220
 
 70 REM Проверяем второе число на простоту
-80 LET T = p
+80 LET T = P
 90 GOSUB 1000
-100 IF r = 0 GOTO 170
+100 IF R = 0 GOTO 220
 
 110 REM Отдельная переменная для результата
-120 LET R = 0
+120 LET R1 = 0
 
 130 REM Считаем количество цифр 2 в троичной записи первого числа
-140 LET T = n
+140 LET T = N
 150 GOSUB 2000
 
-160 LET R = r
+160 LET R1 = R
 
-120 REM Считаем количество цифр 2 в троичной записи второго числа
-130 LET T = p
-140 GOSUB 2000
+170 REM Считаем количество цифр 2 в троичной записи второго числа
+180 LET T = P
+190 GOSUB 2000
 
-150 LET R = R + r
-160 GOTO 180
+200 LET R1 = R1 + R
+210 GOTO 180
 
-170 LET R = -1
+220 LET R1 = -1
 
-180 END
+230 END
 
 
 0900 REM Подпрограмма для проверки числа T на простоту
@@ -37,29 +37,41 @@
 1000 IF T = 1 GOTO 1080
 1010 IF T < 4 GOTO 1060
 
-1020 IF (T % 2) = 0 GOTO 1080
+1020 LET T1 = T
+1030 LET T2 = T1 / 2
+1040 LET T2 = T2 * 2
+1050 LET T3 = T1 - T2
+1060 IF T3 = 0 GOTO 1160
 
-1030 FOR I = 3 TO T STEP 2
-1040 IF (T % I) = 0 GOTO 1080
-1050 NEXT I
+1070 FOR I = 3 TO T STEP 2
+1080 LET T1 = T
+1090 LET T2 = T1 / I
+1100 LET T2 = T2 * I
+1110 LET T3 = T1 - T2
+1120 IF T3 = 0 GOTO 1160
+1130 NEXT I
 
-1060 LET r = 1
-1070 GOTO 1090
+1140 LET R = 1
+1150 GOTO 1170
 
-1080 LET r = 0
+1160 LET R = 0
 
-1090 RETURN
+1170 RETURN
 
-1900 REM Подпрограмма для подсчёта количества чисел 2 в троичной записи чиса T
+1990 REM Подпрограмма для подсчёта количества чисел 2 в троичной записи чиса T
 
-2000 LET r = 0
+2000 LET R = 0
 
 2010 FOR I = T TO 0
-2020 IF (I % 3) = 2 GOTO 2060
-2030 LET I / 3
-2040 NEXT I
+2020 LET T1 = I
+2030 LET T2 = T1 / 3
+2040 LET T2 = T2 * 3
+2050 LET T3 = T1 - T2
+2060 IF T3 = 2 GOTO 2100
+2070 LET I = I / 3
+2080 NEXT I
 
-2050 RETURN
+2090 RETURN
 
-2060 LET r = r + 1
-2070 GOTO 2030
+2100 LET R = R + 1
+2110 GOTO 2070
