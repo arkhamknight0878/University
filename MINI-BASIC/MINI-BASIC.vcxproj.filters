@@ -54,5 +54,16 @@
   <ItemGroup>
     <Text Include="input1.txt" />
     <Text Include="task_14.txt" />
+    <Text Include="Anilazer_lex_result_LEXEMS.txt" />
+    <Text Include="Anilazer_lex_result_OPERANDS.txt" />
+    <Text Include="Anilazer_lex_result_LABELS.txt" />
+    <Text Include="errors.txt" />
+    <Text Include="a.txt" />
+    <Text Include="Atoms.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fin.asm">
+      <Filter>Source Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

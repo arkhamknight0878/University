@@ -19,7 +19,7 @@ struct detection_table_node
 struct detection_table
 {
 	std::vector<int> start_vector;
-	std::vector<detection_table_node> table;
+	std::vector<detection_table_node> hash_table;
 
 	detection_table();
 };

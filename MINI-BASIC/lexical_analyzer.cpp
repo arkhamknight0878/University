@@ -135,12 +135,21 @@ void lexical_analyzer::create_token()
 {
 	Token new_token;
 	new_token.token_class = RKL;
-	new_token.label = -1;
+	new_token.token_value = -1;
 
 	if (RKL == ROWLABEL || RKL == GOTO || RKL == GOSUB)
 	{
-		TS.insert_element(RSTR, NTL);
-		new_token.label = TS.hash_function(RSTR) + 1;
+		if (RKL == GOTO || RKL == GOSUB)
+		{
+			TS.insert(RSTR);
+			new_token.token_value = TS.find(RSTR);
+		}
+		else
+		{
+			int tmp = TS.insert(RSTR);
+			TS.insert_index(tmp, NTL);
+			new_token.token_value = tmp;
+		}
 
 		RSTR = 0;
 	}
@@ -154,7 +163,7 @@ void lexical_analyzer::create_token()
 			else			 new_token_value = RI;
 
 			TO[new_token_value] = 1;
-			new_token.label = new_token_value;
+			new_token.token_value = new_token_value;
 			RI = 0;
 		}
 		else
@@ -172,7 +181,7 @@ void lexical_analyzer::create_token()
 			{
 				if (TO[i] == new_token_value)
 				{
-					new_token.label = i;
+					new_token.token_value = i;
 					TL[NTL] = new_token;
 					NTL++;
 					return;
@@ -180,23 +189,115 @@ void lexical_analyzer::create_token()
 			}
 
 			TO[NTO] = new_token_value;
-			new_token.label = NTO;
+			new_token.token_value = NTO;
 			NTO++;
 		}
 	}
 	else if (RKL == LET || RKL == FOR)
 	{
 		TO[RI] = 1;
-		new_token.label = RI;
+		new_token.token_value = RI;
 		RI = 0;
 	}
 	else if (RKL == AR_OPER)
-		new_token.label = RZN;
+		new_token.token_value = RZN;
 	else if (RKL == REL_OPER)
-		new_token.label = ROT;
+		new_token.token_value = ROT;
 
 	TL[NTL] = new_token;
 	NTL++;
+}
+
+void lexical_analyzer::Print_table_tokens()
+{
+	for (int i = 1; i < NTL; i++)
+	{
+		cout << "---------------------------------------" << endl;
+		cout << TokenTypeString[TL[i].token_class] << " ";
+		switch (TL[i].token_class)
+		{
+
+		case ROWLABEL:
+			cout << TS[TL[i].token_value];
+			break;
+		case OPERAND:
+		case LET:
+		case FOR:
+		case NEXT:
+			if (TL[i].token_value <= 286)
+				cout << (char)((TL[i].token_value % 26) + 'A' - 1) << (((TL[i].token_value / 26) == 0) ? ' ' : (char)(TL[i].token_value / 26 + '0' - 1));
+			else
+				cout << TO[TL[i].token_value];
+			break;
+
+		case GOTO:
+		case GOSUB:
+			cout << TS[TL[i].token_value];
+			break;
+
+		case REL_OPER:
+			switch (TL[i].token_value)
+			{
+			case(1):
+				cout << '=';
+				break;
+			case(2):
+				cout << '<';
+				break;
+			case(3):
+				cout << '>';
+				break;
+			case(4):
+				cout << "<=";
+				break;
+			case(5):
+				cout << ">=";
+				break;
+			case(6):
+				cout << "<>";
+				break;
+			}
+			break;
+		case AR_OPER:
+			switch (TL[i].token_value)
+			{
+			case(1):
+				cout << '+';
+				break;
+			case(2):
+				cout << '-';
+				break;
+			case(3):
+				cout << '*';
+				break;
+			case(4):
+				cout << '/';
+				break;
+			case(5):
+				cout << '^';
+				break;
+			}
+			break;
+		case LEFT_BRACE:
+			cout << '(';
+			break;
+		case RIGHT_BRACE:
+			cout << ')';
+			break;
+		case IF:
+		case RETURN:
+		case END:
+		case _TO:
+		case STEP:
+		case REM:
+		case _ERROR:
+		case ENDFILE:
+			;
+			break;
+		}
+		cout << endl;
+	}
+	cout << "---------------------------------------" << endl;
 }
 
 void lexical_analyzer::A1()
@@ -275,8 +376,9 @@ void lexical_analyzer::A3()
 		D6b();
 		break;
 	case Space:
+		break;
 	case CR:
-		transition_ptr = &lexical_analyzer::A1; break;
+		transition_ptr = &lexical_analyzer::A1;
 		break;
 	}
 }
@@ -634,7 +736,7 @@ void lexical_analyzer::write_tokens()
 	for (int i = 1; i < NTL; i++)
 	{
 		fout.width(3);
-		fout << i - 1 << "		" << Tclass[TL[i].token_class - 1] << " " << TL[i].label << std::endl;
+		fout << i - 1 << "		" << Tclass[TL[i].token_class - 1] << " " << TL[i].token_value << std::endl;
 	}
 
 	fout.close();
@@ -668,20 +770,20 @@ void lexical_analyzer::write_labels()
 
 	for (int i = 0; i < TS.main_area_size; i++)
 	{
-		if (TS.hash_table[i].label == -1 && TS.hash_table[i].alt == 0)
+		if (TS.hash_table[i].value == -1 && TS.hash_table[i].alt == 0)
 			continue;
 
 		fout << "--------------------------" << std::endl;
-		fout << i << "\t | " << TS.hash_table[i].label << "\t | " << TS.hash_table[i].alt << "\t | " << std::endl;
+		fout << i << "\t | " << TS.hash_table[i].value << "\t | " << TS.hash_table[i].alt << "\t | " << std::endl;
 	}
 
 	fout << "==========================" << std::endl;
 	for (int i = TS.main_area_size; i < TS.table_size; i++)
 	{
-		if (TS.hash_table[i].label == -1 && TS.hash_table[i].alt == 0)
+		if (TS.hash_table[i].value == -1 && TS.hash_table[i].alt == 0)
 			continue;
 
-		fout << i << "\t | " << TS.hash_table[i].label << "\t | " << TS.hash_table[i].alt << "\t | " << std::endl;
+		fout << i << "\t | " << TS.hash_table[i].value << "\t | " << TS.hash_table[i].alt << "\t | " << std::endl;
 		fout << "--------------------------" << std::endl;
 	}
 
@@ -1144,12 +1246,12 @@ void lexical_analyzer::M1()
 		return;
 	}
 
-	if (RZN == det_table.table[ROB - 1].letter) (this ->*(det_table.table[ROB - 1].detection_table_transition))();
+	if (RZN == det_table.hash_table[ROB - 1].letter) (this ->*(det_table.hash_table[ROB - 1].detection_table_transition))();
 	else
 	{
-		ROB = det_table.table[ROB - 1].alternative;
+		ROB = det_table.hash_table[ROB - 1].alternative;
 
-		if (ROB) (this ->*(det_table.table[ROB - 1].detection_table_transition))();
+		if (ROB) (this ->*(det_table.hash_table[ROB - 1].detection_table_transition))();
 		else G1b();
 	}
 }

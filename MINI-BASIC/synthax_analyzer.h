@@ -28,9 +28,21 @@ protected:
 	int str_num;			// Номер строки
 	int NTM;				// Индекс первого свободного элемента в таблице меток
 
+	int last_str;
+
 	void print_TA();
 
 	void show_stack();
+
+	void PrintTA_in_file(ofstream& fa);
+
+	void PrintStk_in_file(ofstream& fa);
+
+	const vector<string> AtomTypeString
+	{
+		"NEPRIDUMAL", "END", "NUMBER_LINE", "ASSIGNMENT", "TRANSITION", "STORAGE_TRANSITION", "RETURN_TRANSITION", "CONDITIONAL_TRANSITION",
+		"STORAGE", "LABLE", "CHECK", "INCREASE", "ADDITION", "SUBSTRACTION", "MULTIPLICATION", "DIVISION", "POWER", "PLUS", "MINUS"
+	};
 public:
 	atom TA[512];			// Таблица атомов
 	int TX[512];			// Таблица результатов атома хранения

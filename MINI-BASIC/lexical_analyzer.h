@@ -9,14 +9,16 @@
 #include <string>
 #include <vector>
 
+using namespace std;
+
 enum RK { Letter, Digit, Ar_oper, Rel_oper, Left_brace, Right_brace, Dot, Space, CR, EndFile, Other };
 
-enum RKL { ROWLABEL = 1, OPERAND, REL_OPER, NEXT, LET, FOR, GOTO, GOSUB, LEFT_BRACE, RIGHT_BRACE, IF, RETURN, END, _TO, STEP, REM, _ERROR, ENDFILE, AR_OPER };
+enum RKL { ROWLABEL = 1, OPERAND, AR_OPER, REL_OPER, NEXT, LET, FOR, GOTO, GOSUB, LEFT_BRACE, RIGHT_BRACE, IF, RETURN, END, _TO, STEP, REM, _ERROR, ENDFILE  };
 
 struct Token
 {
 	int token_class;
-	int label;
+	int token_value;
 };
 
 class lexical_analyzer
@@ -51,6 +53,14 @@ protected:
 	int RSE;						// Регистр счётчика ошибок
 
 	bool is_there_no_E;
+
+	const vector<string> TokenTypeString
+	{
+		"KRAKOZYABRA_GENA", "LABLE", "OPERAND", "ARITHMETIC_OPERATIONS", "RELATIONSHIP_OPERATIONS", "NEXT", "LET", "FOR", "GOTO", "GOSUB", "L_BRACKET",
+		"R_BRACKET", "IF", "RETURN", "END", "TO", "STEP", "REM", "ERROR", "END_OF_FILE"
+	};
+
+	void Print_table_tokens();
 
 	void A1();
 	void A2();

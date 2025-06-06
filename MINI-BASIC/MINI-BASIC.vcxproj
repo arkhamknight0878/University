@@ -143,8 +143,17 @@
     <ClInclude Include="synthax_analyzer.h" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="a.txt" />
+    <Text Include="Anilazer_lex_result_LABELS.txt" />
+    <Text Include="Anilazer_lex_result_LEXEMS.txt" />
+    <Text Include="Anilazer_lex_result_OPERANDS.txt" />
+    <Text Include="Atoms.txt" />
+    <Text Include="errors.txt" />
     <Text Include="input1.txt" />
     <Text Include="task_14.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="fin.asm" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

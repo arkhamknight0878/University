@@ -73,7 +73,8 @@ synthax_analyzer::synthax_analyzer()
 	stk.push(18);
 	stk.push(1);
 	NTA = 0;
-	in = NTX = NTM = 1;
+	in = 1;
+	NTX = NTM = 1;
 	str_num = 0;
 	error_flag = false;
 
@@ -119,7 +120,7 @@ synthax_analyzer::synthax_analyzer()
 
 	T[3][10] = &synthax_analyzer::G2;
 	T[3][15] = &synthax_analyzer::F10;
-	T[3][16] = &synthax_analyzer::next;
+	T[3][16] = &synthax_analyzer::G1;
 	T[3][22] = &synthax_analyzer::C;
 	T[3][23] = &synthax_analyzer::T2;
 
@@ -129,7 +130,7 @@ synthax_analyzer::synthax_analyzer()
 	for (int i = 2; i < 22; ++i)
 		T[4][i] = &synthax_analyzer::D;
 
-	T[4][16] = &synthax_analyzer::next;
+	T[4][16] = &synthax_analyzer::D;
 	T[4][22] = &synthax_analyzer::C;
 	T[4][23] = &synthax_analyzer::T2;
 
@@ -149,7 +150,7 @@ synthax_analyzer::synthax_analyzer()
 	T[5][13] = &synthax_analyzer::K4;
 	T[5][14] = &synthax_analyzer::K1;
 	T[5][15] = &synthax_analyzer::K1;
-	T[5][16] = &synthax_analyzer::next;
+	T[5][16] = &synthax_analyzer::K4;
 	T[5][17] = &synthax_analyzer::F15;
 	T[5][18] = &synthax_analyzer::F16;
 	T[5][19] = &synthax_analyzer::K5;
@@ -174,7 +175,7 @@ synthax_analyzer::synthax_analyzer()
 	T[6][13] = &synthax_analyzer::K4;
 	T[6][14] = &synthax_analyzer::K1;
 	T[6][15] = &synthax_analyzer::K1;
-	T[6][16] = &synthax_analyzer::next;
+	T[6][16] = &synthax_analyzer::K4;
 	T[6][17] = &synthax_analyzer::K6;
 	T[6][18] = &synthax_analyzer::K6;
 	T[6][19] = &synthax_analyzer::K6;
@@ -199,7 +200,7 @@ synthax_analyzer::synthax_analyzer()
 	T[7][13] = &synthax_analyzer::K4;
 	T[7][14] = &synthax_analyzer::K1;
 	T[7][15] = &synthax_analyzer::K1;
-	T[7][16] = &synthax_analyzer::next;
+	T[7][16] = &synthax_analyzer::K4;
 	T[7][17] = &synthax_analyzer::K6;
 	T[7][18] = &synthax_analyzer::K6;
 	T[7][19] = &synthax_analyzer::K6;
@@ -224,7 +225,7 @@ synthax_analyzer::synthax_analyzer()
 	T[8][13] = &synthax_analyzer::K4;
 	T[8][14] = &synthax_analyzer::K1;
 	T[8][15] = &synthax_analyzer::K1;
-	T[8][16] = &synthax_analyzer::next;
+	T[8][16] = &synthax_analyzer::K4;
 	T[8][17] = &synthax_analyzer::K6;
 	T[8][18] = &synthax_analyzer::K6;
 	T[8][19] = &synthax_analyzer::K6;
@@ -249,7 +250,7 @@ synthax_analyzer::synthax_analyzer()
 	T[9][13] = &synthax_analyzer::O;
 	T[9][14] = &synthax_analyzer::F19;
 	T[9][15] = &synthax_analyzer::F19;
-	T[9][16] = &synthax_analyzer::next;
+	T[9][16] = &synthax_analyzer::O;
 	T[9][17] = &synthax_analyzer::F17;
 	T[9][18] = &synthax_analyzer::F18;
 	T[9][19] = &synthax_analyzer::O;
@@ -274,7 +275,7 @@ synthax_analyzer::synthax_analyzer()
 	T[10][13] = &synthax_analyzer::O;
 	T[10][14] = &synthax_analyzer::F23;
 	T[10][15] = &synthax_analyzer::F23;
-	T[10][16] = &synthax_analyzer::next;
+	T[10][16] = &synthax_analyzer::O;
 	T[10][17] = &synthax_analyzer::F23;
 	T[10][18] = &synthax_analyzer::F23;
 	T[10][19] = &synthax_analyzer::F21;
@@ -299,7 +300,7 @@ synthax_analyzer::synthax_analyzer()
 	T[11][13] = &synthax_analyzer::K4;
 	T[11][14] = &synthax_analyzer::F26;
 	T[11][15] = &synthax_analyzer::F26;
-	T[11][16] = &synthax_analyzer::next;
+	T[11][16] = &synthax_analyzer::K4;
 	T[11][17] = &synthax_analyzer::F26;
 	T[11][18] = &synthax_analyzer::F26;
 	T[11][19] = &synthax_analyzer::F26;
@@ -315,7 +316,7 @@ synthax_analyzer::synthax_analyzer()
 		T[12][i] = &synthax_analyzer::E1;
 
 	T[12][3]  = &synthax_analyzer::b;
-	T[12][16] = &synthax_analyzer::next;
+	T[12][16] = &synthax_analyzer::E1;
 	T[12][22] = &synthax_analyzer::C;
 	T[12][23] = &synthax_analyzer::T2;
 
@@ -325,7 +326,7 @@ synthax_analyzer::synthax_analyzer()
 
 	T[13][4]  = &synthax_analyzer::b;
 	T[13][13] = &synthax_analyzer::L;
-	T[13][16] = &synthax_analyzer::next;
+	T[13][16] = &synthax_analyzer::O;
 
 	// Строка 14
 	T[14][1] = &synthax_analyzer::M2;
@@ -335,7 +336,7 @@ synthax_analyzer::synthax_analyzer()
 
 	T[14][3]  = &synthax_analyzer::M3;
 	T[14][7]  = &synthax_analyzer::b;
-	T[14][16] = &synthax_analyzer::next;
+	T[14][16] = &synthax_analyzer::M1;
 	T[14][22] = &synthax_analyzer::c;
 	T[14][23] = &synthax_analyzer::T3;
 
@@ -346,7 +347,7 @@ synthax_analyzer::synthax_analyzer()
 		T[15][i] = &synthax_analyzer::H1;
 
 	T[15][10] = &synthax_analyzer::a;
-	T[15][16] = &synthax_analyzer::next;
+	T[15][16] = &synthax_analyzer::H1;
 	T[15][22] = &synthax_analyzer::c;
 	T[15][23] = &synthax_analyzer::T3;
 
@@ -356,7 +357,7 @@ synthax_analyzer::synthax_analyzer()
 
 	T[16][4]  = &synthax_analyzer::K;
 	T[16][13] = &synthax_analyzer::a;
-	T[16][16] = &synthax_analyzer::next;
+	T[16][16] = &synthax_analyzer::O;
 
 	// Строка 17
 	T[17][1] = &synthax_analyzer::P1;
@@ -367,7 +368,7 @@ synthax_analyzer::synthax_analyzer()
 	T[17][10] = &synthax_analyzer::P3;
 	T[17][14] = &synthax_analyzer::a;
 	T[17][15] = &synthax_analyzer::P4;
-	T[17][16] = &synthax_analyzer::next;
+	T[17][16] = &synthax_analyzer::P1;
 	T[17][22] = &synthax_analyzer::c;
 	T[17][23] = &synthax_analyzer::T3;
 
@@ -375,7 +376,7 @@ synthax_analyzer::synthax_analyzer()
 	for (int i = 1; i < 23; ++i)
 		T[18][i] = &synthax_analyzer::P;
 
-	T[18][16] = &synthax_analyzer::next;
+	T[18][16] = &synthax_analyzer::P;
 	T[18][23] = &synthax_analyzer::c;
 }
 
@@ -389,7 +390,7 @@ void synthax_analyzer::error(std::string errMsg)
 	if (TL[in].token_class == 23) ++in;
 	else
 	{
-		while (TL[in].token_class != 1)
+		while (in < TL.size() && TL[in].token_class != 1)
 			++in;
 	}
 
@@ -417,16 +418,30 @@ void synthax_analyzer::start(const char* file_name_)
 	NTtemp = NTO;
 	NTX = 700;
 	NTM = 256;
+
+	Print_table_tokens();
+
+	ofstream fa("Atoms.txt");
+
 	for (int i = 0; i < NTL; ++i)
 	{
-		if (TL[i].token_class == 17) TL[i].token_class = 22;
-		if (TL[i].token_class == 18) TL[i].token_class = 23;
-		if (TL[i].token_class == 19) TL[i].token_class = 16 + TL[i].label;
+		if (TL[i].token_class >= 4 && TL[i].token_class <= 17)
+			--TL[i].token_class;
+		if (TL[i].token_class == 18) TL[i].token_class = 22;
+		if (TL[i].token_class == 19) TL[i].token_class = 23;
+		if (TL[i].token_class == 3) TL[i].token_class = 16 + TL[i].token_value;
 	}
 
 	while (in < NTL)
 	{
 		machine_ch = stk.top();
+		fa << machine_ch << " " << TL[in].token_class << endl;
+
+
+		PrintStk_in_file(fa);
+		PrintTA_in_file(fa);
+
+		fa << endl;
 		switch (machine_ch)
 		{
 		case 19:
@@ -501,25 +516,25 @@ void synthax_analyzer::print_TA()
 		return;
 	}
 
-	std::string types[18];
-	types[0] = "ОКОНЧАНИЕ";
-	types[1] = "HOMCTPOK";
-	types[2] = "ПРИСВ";
-	types[3] = "ПЕРЕХОД";
-	types[4] = "ХРАН ПЕРЕХОД";
-	types[5] = "ВОЗВРПЕРЕХОД";
-	types[6] = "УСЛПЕРЕХОД";
-	types[7] = "ХРАНЕНИЕ";
-	types[8] = "METKA";
-	types[9] = "ПРОВЕРКА";
-	types[10] = "УВЕЛИЧ";
-	types[11] = "СЛОЖ";
-	types[12] = "ВЫЧИТ";
-	types[13] = "УМНОЖ";
-	types[14] = "ДЕЛЕН";
-	types[15] = "ЭКСП";
-	types[16] = "ПЛЮС";
-	types[17] = "МИНУС";
+	std::string types[19];
+	types[1] = "ОКОНЧАНИЕ";
+	types[2] = "HOMCTPOK";
+	types[3] = "ПРИСВ";
+	types[4] = "ПЕРЕХОД";
+	types[5] = "ХРАН ПЕРЕХОД";
+	types[6] = "ВОЗВРПЕРЕХОД";
+	types[7] = "УСЛПЕРЕХОД";
+	types[8] = "ХРАНЕНИЕ";
+	types[9] = "METKA";
+	types[10] = "ПРОВЕРКА";
+	types[11] = "УВЕЛИЧ";
+	types[12] = "СЛОЖ";
+	types[13] = "ВЫЧИТ";
+	types[14] = "УМНОЖ";
+	types[15] = "ДЕЛЕН";
+	types[16] = "ЭКСП";
+	types[17] = "ПЛЮС";
+	types[18] = "МИНУС";
 
 	for (int i = 0; i < NTA; ++i)
 	{
@@ -554,15 +569,50 @@ void synthax_analyzer::show_stack()
 	std::cout << std::endl;
 }
 
+void synthax_analyzer::PrintTA_in_file(ofstream& fa)
+{
+	fa << "TA" << endl << string(25, '-') << endl;
+	for (int i = 0; i < NTA; i++)
+	{
+		fa << AtomTypeString[TA[i].atom_type];
+		if (TA[i].atr1 != -1)
+			fa << " " << TA[i].atr1;
+		if (TA[i].atr2 != -1)
+			fa << " " << TA[i].atr2;
+		if (TA[i].atr3 != -1)
+			fa << " " << TA[i].atr3;
+		if (TA[i].atr4 != -1)
+			fa << " " << TA[i].atr4;
+		fa << endl << string(25, '-') << endl;
+	}
+}
+
+void synthax_analyzer::PrintStk_in_file(ofstream& fa)
+{
+	fa << "Stk" << endl;
+	stack<int> temp;
+	for (int i = 0; i < stk.size();)
+	{
+		fa << stk.top() << " " << endl;
+		temp.push(stk.top());
+		stk.pop();
+	}
+	for (int i = 0; i < temp.size();)
+	{
+		stk.push(temp.top());
+		temp.pop();
+	}
+	fa << endl;
+}
+
 void synthax_analyzer::F1()
 {
 	stk.pop();
 	stk.push(16);
 	stk.push(2);
-	create_atom(2, TL[in].label);
-	str_num = TS.get_value(TL[in].label);
-	in++;
-
+	create_atom(2, TL[in].token_value);
+	str_num = TS[TL[in].token_value];
+	++in;
 }
 
 void synthax_analyzer::F2()
@@ -573,9 +623,9 @@ void synthax_analyzer::F2()
 
 void synthax_analyzer::F3()
 {
-	create_atom(2, TL[in].label);
-	str_num = TS.get_value(TL[in].label);
-	in++;
+	create_atom(2, TL[in].token_value);
+	str_num = TS[TL[in].token_value];
+	++in;
 }
 
 void synthax_analyzer::F4()
@@ -583,19 +633,19 @@ void synthax_analyzer::F4()
 	stk.pop();
 	stk.push(4);
 	stk.push(0);
-	stk.push(TL[in].label);
+	stk.push(TL[in].token_value);
 	stk.push(19);
 	stk.push(3);
 	stk.push(5);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::F5()
 {
 	stk.pop();
 	stk.push(4);
-	create_atom(4, TL[in].label);
-	in++;
+	create_atom(4, TL[in].token_value);
+	++in;
 }
 
 void synthax_analyzer::F6()
@@ -615,15 +665,15 @@ void synthax_analyzer::F6()
 	stk.push(12);
 	stk.push(8);
 	stk.push(5);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::F7()
 {
 	stk.pop();
 	stk.push(4);
-	create_atom(5, TL[in].label);
-	in++;
+	create_atom(5, TL[in].token_value);
+	++in;
 }
 
 void synthax_analyzer::F8()
@@ -631,13 +681,13 @@ void synthax_analyzer::F8()
 	stk.pop();
 	stk.push(4);
 	create_atom(6);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::F9()
 {
 	int p, s, t, u, v, y;
-	p = TL[in].label;// Значение входа
+	p = TL[in].token_value;// Значение входа
 	s = NTX;// Значение поставляемому вызовом процедуры НОВТX
 	NTX++;
 	t = NTX;// Значение поставляемому другим вызовом процедуры НОВТХ
@@ -686,14 +736,14 @@ void synthax_analyzer::F9()
 	stk.push(19);
 	stk.push(3);
 	stk.push(5);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::F10()
 {
 	stk.pop();
 	stk.push(5);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::F11()
@@ -719,9 +769,9 @@ void synthax_analyzer::F13()
 	stk.pop();
 	stk.push(2);
 
-	create_atom(2, TL[in].label);
+	create_atom(2, TL[in].token_value);
 
-	str_num = TS.get_value(TL[in].label);
+	str_num = TS[TL[in].token_value];
 
 	++in;
 }
@@ -828,7 +878,7 @@ void synthax_analyzer::F19()
 
 	while (!stack_tmp.empty())
 	{
-		stk.push(stk.top());
+		stk.push(stack_tmp.top());
 		stack_tmp.pop();
 	}
 }
@@ -1008,19 +1058,21 @@ void synthax_analyzer::F28()
 	}
 
 	stk.pop();
-	stk.push(TL[tmp].label);
+	stk.push(TL[in].token_value);
 
 	while (!tmp_stack.empty())
 	{
 		stk.push(tmp_stack.top());
 		tmp_stack.pop();
 	}
+
+	++in;
 }
 
 void synthax_analyzer::a()
 {
 	stk.pop();
-	in++;
+	++in;
 }
 
 void synthax_analyzer::b()
@@ -1036,19 +1088,19 @@ void synthax_analyzer::b()
 		i--;
 	}
 	stk.pop();
-	stk.push(TL[in].label);
+	stk.push(TL[in].token_value);
 	while (!tmp.empty())
 	{
 		stk.push(tmp.top());
 		tmp.pop();
 	}
-	in++;
+	++in;
 }
 
 void synthax_analyzer::c()
 {
 	create_atom(1);
-	in++;
+	++in;
 }
 
 void synthax_analyzer::d()
