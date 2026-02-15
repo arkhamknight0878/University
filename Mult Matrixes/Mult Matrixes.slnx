@@ -1,0 +1,7 @@
+<Solution>
+  <Configurations>
+    <Platform Name="x64" />
+    <Platform Name="x86" />
+  </Configurations>
+  <Project Path="Mult Matrixes/Mult Matrixes.vcxproj" Id="03893744-20dd-4b5b-8ac6-99a62264ab36" />
+</Solution>
